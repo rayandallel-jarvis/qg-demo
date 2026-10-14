@@ -2311,7 +2311,7 @@ const DEMO_DB=(()=>{
     function closeFocus(){focus=null;fpanel.hidden=true;flyTo(Object.assign({},HOME))}
     $("fpBack").onclick=closeFocus;
     const side3=LITE?0:1;
-    function openFocus(kind,id){
+    function openFocus(kind,id,quiet){
       if(kind==="lamp"){focus=null;fpanel.hidden=true;$("briefCard").hidden=true;flyTo(lampView(id),1500);markT=1;floorMark.position.set(LAMPS[id].x,.01,LAMPS[id].z);return}
       focus={kind,id};$("briefCard").hidden=true;
       if(kind==="board")flyTo(lookFrom(2.5*side3,4.2,3.4,2.5*side3,4.0,-5.15));
@@ -2325,10 +2325,11 @@ const DEMO_DB=(()=>{
       else if(kind==="forest")flyTo(lookFrom(GC.x-3.2+1.4*side3,6.4,GC.z+8.6,GC.x+.2+1.2*side3,.4,GC.z-.6));
       else if(kind==="sorties"){const sh=side3?.95:0;flyTo(lookFrom(6.4+sh*1.2,3.9,.6,6.4+sh*1.2,3.9,-5.15))}
       else if(kind==="project"){const t=trees.get(id);if(t){const p=t.g.position;flyTo(lookFrom(p.x+1.0*side3,2.7,p.z+3.6,p.x+.9*side3,1.6,p.z))}else flyTo(lookFrom(GC.x,4.4,GC.z+6.2,GC.x,1.2,GC.z))}
-      else if(kind==="core"){flyTo(lookFrom(.4,2.3,4.6,0,1.95,0));attention=6;if(api.onCore)api.onCore()}
-      renderPanel();
+      else if(kind==="core"){flyTo(lookFrom(.4,2.3,4.6,0,1.95,0));attention=6;if(!quiet&&api.onCore)api.onCore()}
+      if(quiet){focus=null;fpanel.hidden=true}else renderPanel();
     }
     api.focus=(k,id)=>{setTimeout(()=>openFocus(k,id),60)};
+    api.fly=(k,id)=>{setTimeout(()=>openFocus(k,id,true),60)};
     /* ---- démo : chemin lumineux au sol et balises numérotées ---- */
     (function(){
       const PTS=[[-1.0,15.6],[0.6,11.6],[4.4,13.4],[2.4,5.6],[2.5,-3.4],[-6.8,-1.0],[-10.2,3.0],[-6.8,7.6],[-1.8,2.8]];
@@ -2693,7 +2694,7 @@ const DEMO_DB=(()=>{
     function goto(i){step=Math.max(0,Math.min(STEPS.length-1,i));const s=STEPS[step];render();
       try{const vb=document.querySelector(".views button");if(vb&&vb.getAttribute("aria-pressed")!=="true")vb.click()}catch(e){}
       try{scene3d.route&&scene3d.route.set(MK[step]?step:0)}catch(e){}
-      try{if(s.focus[0]==="home"){const b=document.querySelector('[data-focus="home"]');if(b)b.click()}else scene3d.focus(s.focus[0],s.focus[1])}catch(e){}
+      try{if(s.focus[0]==="home"){const b=document.querySelector('[data-focus="home"]');if(b)b.click()}else scene3d.fly(s.focus[0],s.focus[1])}catch(e){}
       if(matchMedia("(max-width:1100px)").matches&&step>0){const st=document.querySelector(".stage");if(st)st.scrollIntoView({behavior:"smooth",block:"start"})}}
     render();
     window.__demoTour=goto;
