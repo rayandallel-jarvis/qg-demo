@@ -226,32 +226,32 @@ const fmt=n=>Math.round(n).toLocaleString("fr-FR");
 /* ================= LES AGENTS ET LEURS DONNÉES (FICTIVES) ================= */
 const AG={
  concierge:{nom:"Le Concierge",role:"Courrier et mails",color:"#b5523b",soft:"#f6e4de",col:0,lvl:0,
-   quoi:"Il lit la boîte contact chaque heure, range ce qui peut l'être et transmet le reste au bon agent : commandes et factures au Comptable, demandes de devis au Commercial.",
-   pourqui:"Toute petite entreprise dont la boîte mail sert à tout : clients, fournisseurs, banque, administration.",
-   gain:["≈ 4 h / semaine","de tri et de transferts (exemple)"]},
+   quoi:"Il traite la boîte mail en continu : il classe, répond aux demandes simples, rédige une réponse pour les autres et organise la boîte. Il transmet commandes et factures à la Comptable, demandes de devis au Commercial, et te présente le reste en actions prêtes à valider.",
+   pourqui:"Toute entreprise dont la boîte mail centralise clients, fournisseurs, banque et administration.",
+   gain:["≈ 4 h / semaine","rendues au dirigeant (exemple)"]},
  comptable:{nom:"La Comptable",role:"Factures et trésorerie",color:"#1f6f5c",soft:"#dcefe8",col:2,lvl:0,
-   quoi:"Chaque matin, elle relève la banque, rapproche les paiements des factures, prépare les relances d'impayés et projette la trésorerie à 30 jours.",
-   pourqui:"Les dirigeants qui découvrent un trou de trésorerie trop tard, ou qui oublient de relancer.",
-   gain:["2 impayés","repérés avant 30 jours de retard (exemple)"]},
+   quoi:"Chaque matin, elle relève la banque, rapproche paiements et factures, prépare les relances et projette la trésorerie à 30 jours. Tu vois venir chaque encaissement.",
+   pourqui:"Les dirigeants qui veulent piloter leur trésorerie avec un mois d'avance.",
+   gain:["30 jours","de trésorerie visibles d'avance (exemple)"]},
  commercial:{nom:"Le Commercial",role:"Clients et devis",color:"#b8862b",soft:"#f6ecd6",col:0,lvl:1,
-   quoi:"Il tient le tableau des affaires : prospects, devis envoyés, relances. Il prépare chaque devis à partir de la demande transmise par le Concierge.",
-   pourqui:"Les petites équipes sans CRM, où les devis se perdent entre deux mails.",
-   gain:["0 devis oublié","relance automatique à J+7 (exemple)"]},
+   quoi:"Il pilote les affaires : il qualifie chaque demande, prépare le devis, programme les relances et te signale les clients à rappeler en priorité.",
+   pourqui:"Les équipes qui veulent un vrai suivi commercial sans installer de logiciel.",
+   gain:["100 % des devis","suivis et relancés (exemple)"]},
  planificateur:{nom:"La Planificatrice",role:"Agenda et échéances",color:"#3b5ba5",soft:"#e1e7f5",col:1,lvl:1,
-   quoi:"Elle tient la semaine : livraisons, rendez-vous, paie, et surtout les échéances administratives, TVA et cotisations, qu'elle annonce une semaine à l'avance.",
-   pourqui:"Tous ceux qui ont déjà payé une pénalité pour une échéance oubliée.",
-   gain:["0 pénalité","échéances annoncées à J-7 (exemple)"]},
+   quoi:"Elle organise la semaine : livraisons, rendez-vous, paie et échéances administratives. Elle prépare chaque échéance une semaine à l'avance, brouillon compris.",
+   pourqui:"Ceux qui veulent garder une longueur d'avance sur chaque échéance.",
+   gain:["J-7","chaque échéance prête d'avance (exemple)"]},
  veilleur:{nom:"Le Veilleur",role:"Veille du marché",color:"#6b4fa0",soft:"#ebe4f5",col:2,lvl:1,
-   quoi:"Il suit les sujets qui comptent pour l'entreprise : prix des matières, réglementation, concurrents. Il ne garde que ce qui a changé depuis la veille.",
-   pourqui:"Les dirigeants qui n'ont pas le temps de lire la presse mais ne veulent rien rater d'important.",
+   quoi:"Il suit chaque jour les prix, la réglementation et les concurrents, et te livre ce qui a changé avec ce que ça change pour toi.",
+   pourqui:"Les dirigeants qui veulent être informés les premiers, en quelques minutes.",
    gain:["15 min","au lieu d'une heure de lecture (exemple)"]},
  jardinier:{nom:"Le Jardinier",role:"Projets de l'entreprise",color:"#4f8a3c",soft:"#e2efdc",col:1,lvl:2,
-   quoi:"Chaque projet est un arbre de la serre. L'arbre grandit quand le projet avance et jaunit quand il prend du retard ; ses fruits sont les étapes : dorés quand elles sont faites, bleu qui bat pour la prochaine.",
-   pourqui:"Les entreprises qui lancent trois chantiers à la fois et ne savent plus où en est chacun.",
+   quoi:"Il fait avancer les projets : il les découpe en étapes, suit les échéances et te donne la prochaine action. Dans la serre, chaque projet est un arbre qui grandit avec lui ; ses fruits sont les étapes, dorés quand elles sont faites.",
+   pourqui:"Les entreprises qui mènent plusieurs chantiers de front et veulent les voir avancer.",
    gain:["4 projets","suivis d'un coup d'œil (exemple)"]},
  coeur:{nom:"Le cœur du cockpit",role:"Le point du matin",color:"#1d2421",soft:"#efe7d4",col:1,lvl:0,
    quoi:"Il reçoit le travail de tous les agents par les tubes dorés, croise les informations et rédige un seul point chaque matin, avec trois priorités.",
-   pourqui:"Le dirigeant. Au lieu d'ouvrir six outils, il lit un point et décide.",
+   pourqui:"Le dirigeant : un seul point clair chaque matin, et il décide.",
    gain:["1 point","au lieu de six outils à ouvrir (exemple)"]}
 };
 const ORDER=["concierge","comptable","commercial","planificateur","veilleur","jardinier","coeur"];
@@ -299,7 +299,7 @@ function drawScreen(k,x,w,hh,f){const a=AG[k];x.fillStyle="#ffffff";x.fillRect(0
   // barre de la tâche en cours
   if(k!=="coeur"){const Y=hh-46;x.fillStyle="#5b655f";x.font=`500 19px ${FB}`;x.fillText(TASK[k],28,Y-2);x.fillStyle="#e9eae6";rr(x,28,Y+14,W,10,5);x.fill();x.fillStyle=a.color;rr(x,28,Y+14,W*prog[k]/100,10,5);x.fill()}
 }
-const TASK={concierge:"En cours : tri des mails arrivés depuis 7 h",comptable:"En cours : rapprochement des paiements de la nuit",commercial:"En cours : préparation du devis Brasserie du Port",planificateur:"En cours : vérification des échéances du mois",veilleur:"En cours : lecture des sources du matin",jardinier:"En cours : mise à jour des étapes des projets"};
+const TASK={concierge:"En cours : traitement des mails arrivés depuis 7 h",comptable:"En cours : rapprochement des paiements de la nuit",commercial:"En cours : préparation du devis Brasserie du Port",planificateur:"En cours : vérification des échéances du mois",veilleur:"En cours : lecture des sources du matin",jardinier:"En cours : mise à jour des étapes des projets"};
 const PROJ=[{t:"Deuxième boutique",p:40,next:"Signer le bail",late:false,steps:5},{t:"Abonnement café mensuel",p:70,next:"Tester l'envoi à 20 clients",late:false,steps:6},{t:"Nouveau site web",p:25,next:"Valider les maquettes",late:true,steps:4},{t:"Recruter un barista",p:55,next:"Deuxième entretien jeudi",late:false,steps:5}];
 
 /* ================= SIMULATION : ÉVÉNEMENTS ================= */
