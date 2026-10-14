@@ -107,6 +107,28 @@ button{font:inherit;color:inherit}
 .welcome .who{display:flex;gap:10px;align-items:center;padding-top:12px;border-top:1px solid var(--line);font-size:13px;color:var(--mute)}
 .dots{display:flex;gap:5px}.dots span{width:10px;height:10px;border-radius:50%}
 
+.projview{position:absolute;inset:0;z-index:5;display:grid;place-items:center;padding:16px;background:rgba(236,238,233,.5);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.pv-card{width:min(430px,100%);max-height:100%;overflow:auto;background:var(--card);border-radius:22px;padding:20px 20px 16px;display:grid;gap:14px;box-shadow:0 30px 80px rgba(29,36,33,.22),0 0 0 1px var(--line)}
+.pv-top{display:flex;align-items:flex-start;gap:10px}
+.pv-top small{display:block;font:500 11.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#4f8a3c}
+.pv-top h3{margin:2px 0 0;font:700 23px/1.1 var(--display);letter-spacing:-.01em}
+.pv-top .x{margin-left:auto;flex:none;width:38px;height:38px;border-radius:50%;border:1px solid var(--line-2);background:var(--card);font-size:19px;cursor:pointer}
+.pv-prog{display:grid;gap:7px}
+.pv-prog .row{display:flex;justify-content:space-between;align-items:baseline}
+.pv-prog b{font:700 34px/1 var(--display)}
+.pv-bar{height:12px;border-radius:9px;background:#e7e9e3;overflow:hidden}.pv-bar i{display:block;height:100%;border-radius:9px}
+.pv-chip{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:5px 11px;font:600 13px var(--body)}
+.pv-chip::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.pv-next{border-radius:14px;padding:11px 13px;display:grid;gap:3px}
+.pv-next span{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.pv-next b{font:600 16px var(--body)}
+.pv-steps{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.pv-steps li{display:flex;align-items:center;gap:10px;font-size:14.5px}
+.pv-steps li i{width:20px;height:20px;border-radius:50%;flex:none;display:grid;place-items:center;font:700 12px var(--body);font-style:normal;border:2px solid #cfd4cc;color:#fff}
+.pv-steps li.done i{background:#2f7a40;border-color:#2f7a40}
+.pv-steps li.done{color:var(--mute)}
+.pv-steps li.now{font-weight:600}
+.pv-foot{font-size:12.5px;color:var(--mute);border-top:1px solid var(--line);padding-top:10px}
 .screenview{position:absolute;inset:0;z-index:5;display:grid;grid-template-rows:auto minmax(0,1fr);gap:10px;padding:14px;background:rgba(236,238,233,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .sv-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .sv-bar .dot{width:12px;height:12px;border-radius:50%}
@@ -184,6 +206,7 @@ button{font:inherit;color:inherit}
       <div class="tourbar" id="tourbar" role="group" aria-label="Visite guidée"></div>
       <div class="toast off" id="toast" aria-live="polite"><span class="d" id="toastDot"></span><span id="toastTxt"></span></div>
       <div class="tip" id="tip" hidden></div>
+      <div class="projview" id="projview" hidden><div class="pv-card" id="pvCard" role="dialog" aria-label="Fiche projet"></div></div>
       <div class="screenview" id="screenview" hidden>
         <div class="sv-bar"><span class="dot" id="svDot"></span><div><b id="svTitle"></b> <small id="svRole"></small></div><button class="x" type="button" id="svClose" aria-label="Revenir à la maison">×</button></div>
         <div class="sv-wrap" id="svWrap"><canvas id="svCanvas" role="img"></canvas></div>
@@ -207,6 +230,7 @@ button{font:inherit;color:inherit}
         <span><b>Touche une pièce</b> sur le plan ou dans la maison pour t'y rendre.</span>
         <span><b>Touche l'écran mural</b> d'une pièce pour le voir en grand.</span>
         <span><b>Regarde les tubes dorés</b> : les agents envoient leur travail au cœur.</span>
+        <span><b>Touche un arbre de la serre</b> pour ouvrir la fiche du projet.</span>
       </div>
       <div class="notice" id="notice"></div>
     </aside>
@@ -246,7 +270,7 @@ const AG={
    pourqui:"Les dirigeants qui veulent être informés les premiers, en quelques minutes.",
    gain:["15 min","au lieu d'une heure de lecture (exemple)"]},
  jardinier:{nom:"Le Jardinier",role:"Projets de l'entreprise",color:"#4f8a3c",soft:"#e2efdc",col:1,lvl:2,
-   quoi:"Il fait avancer les projets : il les découpe en étapes, suit les échéances et te donne la prochaine action. Dans la serre, chaque projet est un arbre qui grandit avec lui ; ses fruits sont les étapes, dorés quand elles sont faites.",
+   quoi:"Il fait avancer les projets : il les découpe en étapes, suit les échéances et te donne la prochaine action. Dans la serre, chaque projet est un arbre : sa taille montre l'avancement, sa couleur la santé du projet, et une alerte apparaît dès qu'une échéance est dépassée. Touche un arbre pour ouvrir sa fiche.",
    pourqui:"Les entreprises qui mènent plusieurs chantiers de front et veulent les voir avancer.",
    gain:["4 projets","suivis d'un coup d'œil (exemple)"]},
  coeur:{nom:"Le cœur du cockpit",role:"Le point du matin",color:"#1d2421",soft:"#efe7d4",col:1,lvl:0,
@@ -300,7 +324,12 @@ function drawScreen(k,x,w,hh,f){const a=AG[k];x.fillStyle="#ffffff";x.fillRect(0
   if(k!=="coeur"){const Y=hh-46;x.fillStyle="#5b655f";x.font=`500 19px ${FB}`;x.fillText(TASK[k],28,Y-2);x.fillStyle="#e9eae6";rr(x,28,Y+14,W,10,5);x.fill();x.fillStyle=a.color;rr(x,28,Y+14,W*prog[k]/100,10,5);x.fill()}
 }
 const TASK={concierge:"En cours : traitement des mails arrivés depuis 7 h",comptable:"En cours : rapprochement des paiements de la nuit",commercial:"En cours : préparation du devis Brasserie du Port",planificateur:"En cours : vérification des échéances du mois",veilleur:"En cours : lecture des sources du matin",jardinier:"En cours : mise à jour des étapes des projets"};
-const PROJ=[{t:"Deuxième boutique",p:40,next:"Signer le bail",late:false,steps:5},{t:"Abonnement café mensuel",p:70,next:"Tester l'envoi à 20 clients",late:false,steps:6},{t:"Nouveau site web",p:25,next:"Valider les maquettes",late:true,steps:4},{t:"Recruter un barista",p:55,next:"Deuxième entretien jeudi",late:false,steps:5}];
+const PROJ=[
+ {t:"Deuxième boutique",p:40,next:"Signer le bail",due:"30 oct.",health:"ok",late:false,steps:[["Trouver le local",1],["Valider le business plan",1],["Signer le bail",0],["Lancer les travaux",0],["Ouvrir la boutique",0]]},
+ {t:"Abonnement café mensuel",p:70,next:"Tester l'envoi à 20 clients",due:"22 oct.",health:"ok",late:false,steps:[["Définir l'offre",1],["Fixer les prix",1],["Créer la page de vente",1],["Tester l'envoi à 20 clients",0],["Lancer l'abonnement",0]]},
+ {t:"Nouveau site web",p:25,next:"Valider les maquettes",due:"9 oct.",health:"late",delay:"J+5",late:true,steps:[["Rédiger le brief",1],["Valider les maquettes",0],["Développer le site",0],["Mettre en ligne",0]]},
+ {t:"Recruter un barista",p:55,next:"Deuxième entretien",due:"jeudi 16 oct.",health:"warn",late:false,steps:[["Publier l'annonce",1],["Trier les CV",1],["Premiers entretiens",1],["Deuxième entretien",0],["Intégration",0]]}];
+const HEALTH={ok:{c:"#2f7a40",soft:"#e2efdc",lab:"Dans les temps",tree:0x2f7a40},warn:{c:"#b8741a",soft:"#f7ead6",lab:"Échéance proche",tree:0xc98a2a},late:{c:"#b5523b",soft:"#f6e4de",lab:"En retard",tree:0xb5583c}};
 
 /* ================= SIMULATION : ÉVÉNEMENTS ================= */
 // [agent, message, action à faire (bouton) ou rien si c'est une simple info, confirmation]
@@ -371,7 +400,7 @@ function syncBar(){const bar=$("tourbar");bar.replaceChildren();
     h("button",{class:"tb-arrow",type:"button","aria-label":last?"Recommencer":"Pièce suivante",onclick:()=>gotoStep(last?1:step+1)},last?"↺":"›"))}
 function syncRooms(){const box=$("rooms");box.replaceChildren(h("button",{type:"button","aria-pressed":String(step<=0),onclick:()=>gotoStep(0)},h("b",{style:"background:#1d2421"},"⌂"),"Vue d'ensemble"),
   ...ORDER.map((k,i)=>h("button",{type:"button","aria-pressed":String(STEPS[step]&&STEPS[step].key===k),onclick:()=>gotoStep(i+1)},h("b",{style:`background:${AG[k].color}`},String(i+1)),AG[k].nom.replace(/^(Le |La )/,"").replace("cœur du cockpit","Cœur"),nTodo(k)?h("span",{class:"badge","aria-label":nTodo(k)+" à traiter"},String(nTodo(k))):null)))}
-function gotoStep(i){step=Math.max(0,Math.min(STEPS.length-1,i));$("welcome").hidden=true;closeScreen();renderNotice();drawMap();syncBar();syncRooms();
+function gotoStep(i){step=Math.max(0,Math.min(STEPS.length-1,i));$("welcome").hidden=true;closeScreen();closeProject();renderNotice();drawMap();syncBar();syncRooms();
   const s=STEPS[step];if(scene)scene.focus(AG[s.key]?s.key:"home");
   if(!matchMedia("(min-width:1081px)").matches&&step>0)$("stage").scrollIntoView({behavior:"smooth",block:"start"})}
 
@@ -382,6 +411,18 @@ function paintScreen(){if(!screenKey)return;const cv=$("svCanvas");const sc=Math
 function openScreen(k){const a=AG[k];screenKey=k;$("svDot").style.background=a.color;$("svTitle").textContent=a.nom;$("svRole").textContent=a.role;$("svCanvas").setAttribute("aria-label","Écran : "+a.nom);$("screenview").hidden=false;sizeScreen();paintScreen();
   if(!matchMedia("(min-width:1081px)").matches)$("stage").scrollIntoView({behavior:"smooth",block:"start"})}
 function closeScreen(){screenKey=null;$("screenview").hidden=true}
+let projOpen=null;
+function openProject(i){const p=PROJ[i],H=HEALTH[p.health];projOpen=i;const nextIdx=p.steps.findIndex(s=>!s[1]);
+  $("pvCard").replaceChildren(
+    h("div",{class:"pv-top"},h("div",null,h("small",{text:"Projet · suivi par le Jardinier"}),h("h3",{text:p.t})),h("button",{class:"x",type:"button","aria-label":"Fermer la fiche",onclick:closeProject},"×")),
+    h("div",{class:"pv-prog"},h("div",{class:"row"},h("b",{text:p.p+" %"}),h("span",{class:"pv-chip",style:`background:${H.soft};color:${H.c}`},H.lab+(p.delay?" · "+p.delay:""))),h("div",{class:"pv-bar"},h("i",{style:`width:${p.p}%;background:${H.c}`}))),
+    h("div",{class:"pv-next",style:`background:${H.soft}`},h("span",{text:"Prochaine action"}),h("b",{text:p.next+" · échéance "+p.due})),
+    h("ul",{class:"pv-steps"},...p.steps.map((s,k)=>h("li",{class:s[1]?"done":k===nextIdx?"now":null},h("i",{"aria-hidden":"true"},s[1]?"✓":""),s[0]))),
+    h("div",{class:"pv-foot",text:"L'arbre grandit à chaque étape franchie. Sa couleur montre la santé du projet."}));
+  $("projview").hidden=false}
+function closeProject(){projOpen=null;$("projview").hidden=true}
+$("projview").addEventListener("click",e=>{if(e.target.id==="projview")closeProject()});
+window.addEventListener("keydown",e=>{if(e.key==="Escape"&&projOpen!=null)closeProject()});
 $("svClose").addEventListener("click",closeScreen);
 addEventListener("resize",()=>{if(screenKey){sizeScreen();paintScreen()}});
 
@@ -576,25 +617,27 @@ function build(){
     // un arbre par projet : il grandit avec l'avancement, ses fruits sont les étapes (dorés = faites, bleu qui bat = la prochaine)
     PROJ.forEach((p,i)=>{const x=-6+i*4;const g=new THREE.Group();g.position.set(x,oy,-.6);S.add(g);
       box(2.6,.24,1.5,"#8a6a4a",0,.12,0,g);box(2.5,.04,1.4,"#3e2c1f",0,.25,0,g);
-      const k=p.p/100,col=p.late?0xa87a22:0x23683a;
+      const k=p.p/100,HL=HEALTH[p.health],col=HL.tree;
       const tg=new THREE.Group();tg.position.y=.27;tg.scale.setScalar(.95);g.add(tg);const sway=new THREE.Group();tg.add(sway);
       const trunk=new THREE.Mesh(new THREE.CylinderGeometry(.07,.15,1,7),new THREE.MeshStandardMaterial({color:0x4d3726,roughness:.9,flatShading:true}));trunk.castShadow=true;sway.add(trunk);
       const leafMat=new THREE.MeshStandardMaterial({color:col,roughness:.7,flatShading:true,emissive:col,emissiveIntensity:.05});
       const crown=new THREE.Group();sway.add(crown);
       [[0,0,0,1],[.34,-.14,.12,.72],[-.32,-.1,-.12,.76],[.06,.32,-.06,.7],[-.1,-.2,.32,.64],[.18,.12,-.34,.6]].forEach(([a,b,c,sc])=>{const m=new THREE.Mesh(new THREE.IcosahedronGeometry(.5,1),leafMat);m.position.set(a,b,c);m.scale.setScalar(sc);m.castShadow=true;crown.add(m)});
       const Ht=.55+1.6*k,cs_=.5+.8*k;trunk.scale.set(.8+.6*k,Ht,.8+.6*k);trunk.position.y=Ht/2;crown.position.y=Ht+cs_*.32;crown.scale.setScalar(cs_);
-      const n=p.steps,done=Math.round(n*k);const fruits=[];
-      for(let e=0;e<n;e++){const yy=.55-1.1*(e+.5)/n,r=Math.sqrt(Math.max(0,1-yy*yy)),an=e*2.39996;const dir=new THREE.Vector3(Math.cos(an)*r,yy*.8,Math.sin(an)*r).normalize().multiplyScalar(.54);
-        const isDone=e<done,isNext=e===done;const fm=sph(.075,isDone?"#e9b94a":isNext?"#5b8fd6":"#2f3a36",dir.x,dir.y,dir.z,crown,isDone?{emissive:new THREE.Color("#e9a92a"),emissiveIntensity:.55,metalness:.3,roughness:.35}:isNext?{emissive:new THREE.Color("#3b6fc2"),emissiveIntensity:.6}:{roughness:.6});fruits.push({m:fm,next:isNext})}
-      const ring=new THREE.Mesh(new THREE.RingGeometry(.42,.48,48),new THREE.MeshBasicMaterial({color:p.late?0xc79a2e:0x4f8a3c,transparent:true,opacity:.7,side:THREE.DoubleSide,depthWrite:false}));ring.rotation.x=-Math.PI/2;ring.position.y=.285;g.add(ring);
-      const T=texCanvas(512,128,(x,w,hh)=>{x.fillStyle="#f8f6f0";x.fillRect(0,0,w,hh);x.fillStyle="#1d2421";x.font=`700 40px ${FD}`;x.fillText(fit(x,p.t,w-140),18,52);x.fillStyle=p.late?"#a8620c":"#4f8a3c";x.font=`600 36px ${FM}`;x.textAlign="right";x.fillText(p.p+" %",w-18,52);x.textAlign="left";x.fillStyle="#e4e6e1";x.fillRect(18,84,w-36,16);x.fillStyle=p.late?"#a8620c":"#4f8a3c";x.fillRect(18,84,(w-36)*k,16)});
-      const lab=new THREE.Mesh(new THREE.PlaneGeometry(1.9,.48),new THREE.MeshBasicMaterial({map:T.t}));lab.position.set(0,.14,.76);lab.rotation.x=-.25;g.add(lab);plants.push({sway,crown,cs:cs_,fruits,ring,ph:Math.random()*6})});
+      // alerte d'échéance dépassée : une pastille rouge au-dessus de l'arbre
+      let pin=null;if(p.health==="late"){const c=document.createElement("canvas");c.width=256;c.height=192;const x=c.getContext("2d");x.fillStyle="#c2412d";rr(x,18,14,220,96,48);x.fill();x.beginPath();x.moveTo(110,108);x.lineTo(146,108);x.lineTo(128,140);x.closePath();x.fill();x.strokeStyle="#fff";x.lineWidth=8;rr(x,18,14,220,96,48);x.stroke();x.fillStyle="#fff";x.font=`700 54px ${FD}`;x.textAlign="center";x.textBaseline="middle";x.fillText("! "+p.delay,128,64);
+        pin=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthTest:false}));pin.renderOrder=11;pin.scale.set(1.6,1.2,1);pin.position.set(0,.27+(Ht+cs_*.9)*.95+.8,0);g.add(pin)}
+      const hitT=new THREE.Mesh(new THREE.CylinderGeometry(.9,.9,2.6,10),new THREE.MeshBasicMaterial({visible:false}));hitT.position.y=1.3;hitT.userData.tree=i;g.add(hitT);clickable.push(hitT);
+      const fruits=[];
+      const ring=new THREE.Mesh(new THREE.RingGeometry(.42,.48,48),new THREE.MeshBasicMaterial({color:HL.c,transparent:true,opacity:.7,side:THREE.DoubleSide,depthWrite:false}));ring.rotation.x=-Math.PI/2;ring.position.y=.285;g.add(ring);
+      const T=texCanvas(512,128,(x,w,hh)=>{x.fillStyle="#f8f6f0";x.fillRect(0,0,w,hh);x.fillStyle="#1d2421";x.font=`700 40px ${FD}`;x.fillText(fit(x,p.t,w-140),18,52);x.fillStyle=HL.c;x.font=`600 36px ${FM}`;x.textAlign="right";x.fillText(p.p+" %",w-18,52);x.textAlign="left";x.fillStyle="#e4e6e1";x.fillRect(18,84,w-36,16);x.fillStyle=HL.c;x.fillRect(18,84,(w-36)*k,16)});
+      const lab=new THREE.Mesh(new THREE.PlaneGeometry(1.9,.48),new THREE.MeshBasicMaterial({map:T.t}));lab.position.set(0,.14,.76);lab.rotation.x=-.25;g.add(lab);plants.push({g,sway,crown,cs:cs_,fruits,ring,pin,py:pin?pin.position.y:0,ph:Math.random()*6})});
     wallScreen("jardinier",4.4,oy+1.5,-gd/2+.08,2.4,1.4);
     const P=person({skin:SKIN[6],top:"#e2efdc",pants:"#5a6b3f",hair:"#7a4a26",hs:"hat",acc:"#d9c38f",apron:"#4f8a3c"});chars["jardinier"]=P;S.add(P.g);
     const can=new THREE.Group();can.position.set(0,-.62,.12);P.arms[1].add(can);box(.22,.2,.14,"#4f8a3c",0,0,0,can);const sp=cyl(.02,.03,.3,"#4f8a3c",.18,.06,0,can);sp.rotation.z=-1;
     const drops=[];for(let i=0;i<6;i++){const d=sph(.025,"#9fd3e8",0,0,0,S,{transparent:true,opacity:.8});d.visible=false;drops.push(d)}
     patrol(P,{x:0,y:oy,z:0},[[-6,.55,"water",Math.PI,2.2],[-2,.55,"water",Math.PI,2],[2,.55,"water",Math.PI,2],[6,.55,"water",Math.PI,2],[3,1.4,"look",0,1.4]],{water:(t,T)=>{P.arms[1].rotation.x=-1.1;can.rotation.z=.6+Math.sin(t*3)*.1;const wp=new THREE.Vector3();sp.getWorldPosition(wp);drops.forEach((d,j)=>{d.visible=true;const u=((T*1.6)+j/6)%1;d.position.set(wp.x+.15,wp.y-u*.9,wp.z+.05+u*.1)})},look:(t)=>{drops.forEach(d=>d.visible=false);can.rotation.z=0;P.head.rotation.y=Math.sin(t*2)*.4}});
-    anim.push((dt,T)=>{plants.forEach(p=>{p.sway.rotation.z=Math.sin(T*1.3+p.ph)*.025;p.sway.rotation.x=Math.sin(T*.9+p.ph*1.7)*.015;p.ring.material.opacity=.45+.25*Math.sin(T*2+p.ph);p.fruits.forEach(f=>{if(f.next)f.m.scale.setScalar(1+.3*Math.sin(T*4))})})});
+    anim.push((dt,T)=>{plants.forEach(p=>{p.sway.rotation.z=Math.sin(T*1.3+p.ph)*.025;p.sway.rotation.x=Math.sin(T*.9+p.ph*1.7)*.015;p.ring.material.opacity=.45+.25*Math.sin(T*2+p.ph);if(p.pin){p.pin.position.y=p.py+Math.sin(T*2.6+p.ph)*.07;const s_=1+.06*Math.sin(T*5);p.pin.scale.set(1.6*s_,1.2*s_,1)}})});
     hubs.jardinier={x:-8.6,y:oy+.4}}
 
   /* ---------- arbres et réverbères ---------- */
@@ -672,7 +715,7 @@ function build(){
   canvas.addEventListener("dblclick",e=>{const r=canvas.getBoundingClientRect();const mx=(e.clientX-r.left)/r.width*2-1,my=-(e.clientY-r.top)/r.height*2+1;const keep={...cs};zoomAt(.6,mx,my);const fin={...cs};Object.assign(cs,keep);goal={from:{...cs},to:fin,t0:performance.now(),dur:600}});
   // clavier : flèches ou ZQSD pour se déplacer, Maj + flèches pour tourner, + et − pour zoomer, 0 pour revenir
   const held=new Set();const KEYS={arrowleft:"left",arrowright:"right",arrowup:"up",arrowdown:"down",q:"left",a:"left",d:"right",z:"up",w:"up",s:"down"};
-  window.addEventListener("keydown",e=>{const t=document.activeElement;if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"))return;if(!$("screenview").hidden||!$("welcome").hidden)return;const k=e.key.toLowerCase();
+  window.addEventListener("keydown",e=>{const t=document.activeElement;if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"))return;if(!$("screenview").hidden||!$("welcome").hidden||!$("projview").hidden)return;const k=e.key.toLowerCase();
     if(KEYS[k]){e.preventDefault();goal=null;held.add(e.shiftKey&&k.startsWith("arrow")&&(k==="arrowleft"||k==="arrowright")?(k==="arrowleft"?"rotl":"rotr"):KEYS[k])}
     else if(k==="+"||k==="="){e.preventDefault();step3D("in")}else if(k==="-"||k==="_"){e.preventDefault();step3D("out")}else if(k==="0"||k==="home"){gotoStep(0)}});
   window.addEventListener("keyup",e=>{const k=e.key.toLowerCase();if(KEYS[k]){held.delete(KEYS[k]);held.delete("rotl");held.delete("rotr")}if(k==="shift"){held.delete("rotl");held.delete("rotr")}});
@@ -687,10 +730,10 @@ function build(){
      bt.addEventListener("pointerdown",e=>{e.preventDefault();if(a==="home"){gotoStep(0);return}step3D(a);stop();const t0=setTimeout(()=>{rep=setInterval(()=>step3D(a),160)},380);rep=t0});
      ["pointerup","pointerleave","pointercancel"].forEach(ev=>bt.addEventListener(ev,()=>{clearTimeout(rep);stop()}))})}
   const ray=new THREE.Raycaster(),mv=new THREE.Vector2();
-  function hit(e){const r=canvas.getBoundingClientRect();mv.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(mv,cam);const hs=ray.intersectObjects(clickable,false);if(!hs.length)return null;const sc=hs.find(x=>x.object.userData.screen&&x.distance-hs[0].distance<.5);return sc?{k:sc.object.userData.key,screen:true}:{k:hs[0].object.userData.key}}
-  function pick(e){const r=hit(e);if(!r)return;const i=ORDER.indexOf(r.k);if(STEPS[step]&&STEPS[step].key===r.k||r.screen){if(STEPS[step]&&STEPS[step].key!==r.k)gotoStep(i+1);openScreen(r.k)}else gotoStep(i+1)}
+  function hit(e){const r=canvas.getBoundingClientRect();mv.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(mv,cam);const hs=ray.intersectObjects(clickable,false);if(!hs.length)return null;const tr=hs.find(x=>x.object.userData.tree!=null);if(tr)return{tree:tr.object.userData.tree};const sc=hs.find(x=>x.object.userData.screen&&x.distance-hs[0].distance<.5);return sc?{k:sc.object.userData.key,screen:true}:{k:hs[0].object.userData.key}}
+  function pick(e){const r=hit(e);if(!r)return;if(r.tree!=null){openProject(r.tree);return}const i=ORDER.indexOf(r.k);if(STEPS[step]&&STEPS[step].key===r.k||r.screen){if(STEPS[step]&&STEPS[step].key!==r.k)gotoStep(i+1);openScreen(r.k)}else gotoStep(i+1)}
   const tip=$("tip");
-  function hover(e){const r=hit(e);canvas.style.cursor=r?"pointer":"grab";if(r){const b=stage.getBoundingClientRect();tip.textContent=(r.screen?"Voir l'écran : ":"Entrer : ")+AG[r.k].nom;tip.hidden=false;tip.style.transform=`translate(${e.clientX-b.left+14}px,${e.clientY-b.top+14}px)`}else tip.hidden=true}
+  function hover(e){const r=hit(e);canvas.style.cursor=r?"pointer":"grab";if(r){const b=stage.getBoundingClientRect();tip.textContent=r.tree!=null?"Voir le projet : "+PROJ[r.tree].t:(r.screen?"Voir l'écran : ":"Entrer : ")+AG[r.k].nom;tip.hidden=false;tip.style.transform=`translate(${e.clientX-b.left+14}px,${e.clientY-b.top+14}px)`}else tip.hidden=true}
   canvas.addEventListener("pointerleave",()=>{tip.hidden=true});
   function resize(){const r=canvas.getBoundingClientRect();if(!r.width)return;VW=r.width;VH=r.height;R.setSize(VW,VH,false);applyCam()}
   new ResizeObserver(resize).observe(canvas);resize();
