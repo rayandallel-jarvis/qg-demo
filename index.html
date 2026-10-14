@@ -1,5 +1,5 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
-<title>QG Jarvis démo</title>
+<title>Cockpit</title>
 <style>.demo-badge{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:50;background:#33260f;color:#f0b35a;border:1px solid rgba(240,179,90,.45);border-radius:999px;padding:5px 14px;font:500 11.5px "JetBrains Mono",ui-monospace,monospace;letter-spacing:.1em;pointer-events:none;white-space:nowrap}</style>
 <div class="demo-badge">DÉMO · DONNÉES FICTIVES</div>
 <style>
@@ -24,11 +24,28 @@
 .plan-prog span.on{background:var(--cyan)}
 .plan-cta{display:grid;gap:6px;border:1px solid var(--cyan);border-radius:6px;padding:12px;background:var(--cyan-soft)}
 .plan-cta code{justify-self:start;font:600 15px var(--mono);letter-spacing:.14em;color:var(--cyan);border:1px dashed var(--cyan);border-radius:4px;padding:3px 10px}
+.tour-go{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;border:1px solid var(--cyan);border-radius:8px;padding:14px 16px;background:linear-gradient(135deg,rgba(87,211,242,.22),rgba(155,140,255,.18));color:var(--text);box-shadow:0 0 0 0 rgba(87,211,242,.5);animation:tgpulse 2.2s infinite}
+.tour-go b{display:block;font:600 17px var(--display);letter-spacing:.06em;text-transform:uppercase;color:#dff8ff}
+.tour-go small{display:block;font:500 11.5px var(--mono);color:var(--muted);letter-spacing:.08em;margin-top:2px}
+.tour-go:hover{background:linear-gradient(135deg,rgba(87,211,242,.32),rgba(155,140,255,.26))}
+.tg-play{width:38px;height:38px;flex:none;border-radius:50%;background:var(--cyan);position:relative}
+.tg-play::after{content:"";position:absolute;left:15px;top:11px;border-left:13px solid #05080c;border-top:8px solid transparent;border-bottom:8px solid transparent}
+@keyframes tgpulse{0%{box-shadow:0 0 0 0 rgba(87,211,242,.45)}70%{box-shadow:0 0 0 12px rgba(87,211,242,0)}100%{box-shadow:0 0 0 0 rgba(87,211,242,0)}}
+.tourbar{position:absolute;left:12px;bottom:46px;z-index:3;display:flex;align-items:center;gap:8px;max-width:calc(100% - 24px)}
+.tour-go.small{width:auto;padding:10px 18px 10px 10px;background:rgba(6,16,22,.88);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.tour-go.small .tg-play{width:32px;height:32px}.tour-go.small .tg-play::after{left:12px;top:9px;border-left-width:11px;border-top-width:7px;border-bottom-width:7px}
+.tour-go.small b{font-size:15px}
+.tb-arrow{width:42px;height:42px;flex:none;border-radius:50%;border:1px solid var(--cyan);background:rgba(6,16,22,.9);color:var(--cyan);font:600 24px/1 var(--display);cursor:pointer}
+.tb-arrow:hover{background:var(--cyan-soft)}
+.tb-txt{display:grid;gap:1px;padding:7px 16px;border-radius:999px;border:1px solid var(--line-hi);background:rgba(6,16,22,.9);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);min-width:0;text-align:center}
+.tb-txt small{font:500 10.5px var(--mono);letter-spacing:.14em;color:var(--muted)}
+.tb-txt b{font:600 14px var(--display);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (prefers-reduced-motion:reduce){.tour-go{animation:none}}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Layout : salle de commande — barre d'état (météo, Nasdaq, liaison) ; espace de travail : vue Bureau 3D ou Tableau à gauche, conversation Jarvis à droite ; une colonne sur téléphone */
+/* Layout : salle de commande — barre d'état (météo, Nasdaq, liaison) ; espace de travail : vue Bureau 3D ou Tableau à gauche, conversation Cockpit à droite ; une colonne sur téléphone */
 :root{
   --bg:#05080c; --panel:#0a1017; --panel-2:#0e1620; --line:#18242f; --line-hi:#27394a;
   --text:#dbe6ee; --muted:#8095a5; --dim:#526676;
@@ -399,7 +416,7 @@ details.pmd .savebar{background:var(--panel);bottom:0}
   <header class="top">
     <div class="brand">
       <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="none" stroke="#57d3f2" stroke-width="1.5" stroke-dasharray="4 3"></circle><circle cx="20" cy="20" r="11" fill="none" stroke="#57d3f2" stroke-width="1.5"></circle><circle cx="20" cy="20" r="4" fill="#57d3f2"></circle></svg>
-      <div><b>JARVIS</b><span>QG · RAYAN</span></div>
+      <div><b>COCKPIT</b><span>DÉMO</span></div>
     </div>
     <div class="views" role="group" aria-label="Choix de la vue">
       <button type="button" id="vBureau" aria-pressed="false">Bureau</button>
@@ -407,20 +424,20 @@ details.pmd .savebar{background:var(--panel);bottom:0}
     </div>
     <div class="status">
       <span class="chipx" id="meteoChip" title="Météo à Paris"><span id="meteoIco"></span><b id="meteoTxt">—</b><span>Paris</span></span>
-      <span class="chipx" id="ndqChip" title="Nasdaq Composite"><span>NASDAQ</span><b id="ndqTxt">—</b><span id="ndqVar"></span></span>
+      <span class="chipx" id="ndqChip" title="Nasdaq Composite" hidden><span>NASDAQ</span><b id="ndqTxt">—</b><span id="ndqVar"></span></span>
       <span class="chipx link" id="link"><span class="dot"></span><span id="linkTxt">Connexion…</span></span>
       <span id="date"></span>
       <span class="clock" id="clock">--:--:--</span>
     </div>
   </header>
 
-  <div id="offline" class="offline" hidden>Le QG n'arrive pas à joindre sa base de données dans cette vue. Ouvre la page depuis claude.ai, connecté à ton compte, pour voir tes données en temps réel.</div>
+  <div id="offline" class="offline" hidden>Le cockpit n'arrive pas à joindre sa base de données dans cette vue. Ouvre la page depuis claude.ai, connecté à ton compte, pour voir tes données en temps réel.</div>
 
   <div class="work">
     <div>
       <section class="view" id="viewBureau" hidden aria-label="Bureau 3D">
         <div class="stage" id="stage">
-          <canvas id="c3d" tabindex="0" aria-label="Bureau 3D : le noyau Jarvis, le tableau des objectifs, la forêt des projets et l'écran des sorties"></canvas>
+          <canvas id="c3d" tabindex="0" aria-label="Bureau 3D : le cœur du cockpit, le tableau des objectifs, la forêt des projets et l'écran des sorties"></canvas>
           <div class="shortcuts" role="group" aria-label="Aller vers">
             <button class="btn ghost" type="button" data-focus="desk">Menu</button>
             <button class="btn ghost" type="button" data-focus="board">Objectifs</button>
@@ -429,21 +446,21 @@ details.pmd .savebar{background:var(--panel);bottom:0}
             
             <button class="btn ghost" type="button" data-focus="atelier">Atelier</button>
             <button class="btn ghost" type="button" data-focus="side">Veille</button>
-            <button class="btn ghost" type="button" data-focus="core">Jarvis</button>
+            <button class="btn ghost" type="button" data-focus="core">Cockpit</button>
             <button class="btn ghost" type="button" data-focus="courrier" id="scMail">Courrier</button>
             <button class="btn ghost" type="button" data-focus="mail">Mails</button>
             <button class="btn ghost" type="button" data-focus="home">Vue générale</button>
             <button class="btn" type="button" id="fullBtn" aria-pressed="false" aria-label="Plein écran" title="Plein écran" style="padding:6px 9px;display:inline-grid;place-items:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
           </div>
           <div class="imm" id="imm" hidden>
-            <span class="cap" id="immCap">Touche le micro et parle à Jarvis.</span>
+            <span class="cap" id="immCap">Touche le micro et parle au cockpit.</span>
             <div class="row">
-              <button class="mic" type="button" id="micBtn" aria-pressed="false" aria-label="Parler à Jarvis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><line x1="12" y1="18" x2="12" y2="21"></line></svg></button>
+              <button class="mic" type="button" id="micBtn" aria-pressed="false" aria-label="Parler au cockpit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><line x1="12" y1="18" x2="12" y2="21"></line></svg></button>
             </div>
-            <form id="immForm" autocomplete="off" hidden><input id="immQ" type="text" placeholder="Dicte ou écris à Jarvis…" aria-label="Message pour Jarvis"><button class="btn" type="submit">Envoyer</button></form>
+            <form id="immForm" autocomplete="off" hidden><input id="immQ" type="text" placeholder="Dicte ou écris au cockpit…" aria-label="Message pour Cockpit"><button class="btn" type="submit">Envoyer</button></form>
           </div>
           <span class="hint" id="hint">Clique sur un lampadaire de coin pour changer de point de vue · sur un élément pour l'ouvrir · glisse pour regarder · Z Q S D pour marcher</span>
-          <span class="corestate" id="coreState"><i></i><span id="coreStateTxt">JARVIS · VEILLE</span></span>
+          <span class="corestate" id="coreState"><i></i><span id="coreStateTxt">COCKPIT · VEILLE</span></span>
           <div class="tip3d" id="tip3d" hidden></div>
           <div class="bubble" id="bubble" hidden></div>
           <div class="brief" id="briefCard" hidden role="status">
@@ -470,7 +487,7 @@ details.pmd .savebar{background:var(--panel);bottom:0}
         <div class="hero">
           <div class="panel" aria-labelledby="greet">
             <div class="ph"><span class="label">Briefing</span><span class="code" id="maj">SYS-01</span></div>
-            <h1 class="greet" id="greet">Bonsoir, <em>Rayan</em>.</h1>
+            <h1 class="greet" id="greet">Bienvenue dans le <em>cockpit</em>.</h1>
             <p class="say" id="sayTxt"><span class="skel" style="display:block;width:80%"></span></p>
             <div class="next" id="nextAction"></div>
             <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost" type="button" id="toBureau">Entrer dans le bureau 3D</button><button class="btn ghost" type="button" id="replay2">Écouter le briefing</button></div>
@@ -479,7 +496,7 @@ details.pmd .savebar{background:var(--panel);bottom:0}
             <div class="ph"><h2 id="h-env">Environnement</h2><span class="code">SYS-00</span></div>
             <div class="tiles">
               <div class="tile"><span class="label">Météo · Paris</span><span class="big" id="tMeteo">—</span><span class="sub" id="tMeteoSub"></span></div>
-              <div class="tile"><span class="label">Nasdaq Composite</span><span class="big" id="tNdq">—</span><span class="sub" id="tNdqSub"></span></div>
+              <div class="tile" hidden><span class="label">Nasdaq Composite</span><span class="big" id="tNdq">—</span><span class="sub" id="tNdqSub"></span></div><div class="tile"><span class="label">Agents en activité</span><span class="big" id="wAgents">—</span><span class="sub" id="wAgentsSub"></span></div><div class="tile"><span class="label">Courrier</span><span class="big" id="wMail">—</span><span class="sub" id="wMailSub"></span></div><div class="tile"><span class="label">Compte démo des bots</span><span class="big" id="wBots">—</span><span class="sub" id="wBotsSub"></span></div>
             </div>
             <div class="directive"><span class="label">Directive de la semaine</span><p class="say" id="focus" style="border:0;padding:0">—</p></div>
           </div>
@@ -556,7 +573,7 @@ details.pmd .savebar{background:var(--panel);bottom:0}
 
     <section class="panel chat" id="chat" aria-labelledby="h-chat">
       <div class="ph">
-        <div class="who"><span class="orb" id="orb" aria-hidden="true"></span><h2 id="h-chat">Jarvis</h2></div>
+        <div class="who"><span class="orb" id="orb" aria-hidden="true"></span><h2 id="h-chat">Cockpit</h2></div>
         <div class="tools">
           <button class="btn ghost" type="button" id="voiceBtn" aria-pressed="false">Voix</button>
           <button class="btn ghost" type="button" id="clearBtn">Effacer</button>
@@ -571,15 +588,15 @@ details.pmd .savebar{background:var(--panel);bottom:0}
           <button type="button" class="chip">Une idée de date ce soir ?</button>
         </div>
         <div class="row">
-          <input id="q" name="q" type="text" placeholder="Parle à Jarvis…" aria-label="Message pour Jarvis">
+          <input id="q" name="q" type="text" placeholder="Parle au cockpit…" aria-label="Message pour Cockpit">
           <button class="btn" id="askBtn" type="submit">Envoyer</button>
           <button class="btn ghost" id="stopBtn" type="button" hidden>Stop</button>
         </div>
-        <p class="note" id="askNote">Jarvis lit ton QG (projets, sorties, météo, marchés) et peut y agir. Sur iPhone, la touche micro du clavier te permet de lui dicter.</p>
+        <p class="note" id="askNote">Cockpit lit ton cockpit (projets, sorties, météo, marchés) et peut y agir. Sur iPhone, la touche micro du clavier te permet de lui dicter.</p>
       </form>
     </section>
   </div>
-  <a class="btn fab" href="#chat">Parler à Jarvis</a>
+  <a class="btn fab" href="#chat">Parler au cockpit</a>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -600,39 +617,35 @@ const DEMO_DB=(()=>{
   const hhmm=ago=>{const d=new Date(now-ago);return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")};
   const E={};
   E.projets={
-    "trading":{nom:"Bot de trading (argent fictif)",ordre:-2,domaine:"Trading",avancement:60,sante:"attention",statut:"en_cours",
-      etapes:[{f:true,t:"1 · Cadrage : 4 stratégies et règles de risque"},{f:true,t:"2 · Dépôt de code et notifications"},{f:true,t:"3 · Bots sur compte démo (100 000 € fictifs)"},{f:true,t:"4 · Backtest 6 mois sur 4 marchés"},{f:false,t:"5 · Cycles de 100 trades, un réglage par cycle"},{f:false,t:"Bilan : décider ou non du réel"}],
-      prochaine:"Poursuivre le cycle 1 sur les stratégies 1 et 2",etat:"Les stratégies 1 et 2 tournent sur le compte démo ; 3 et 4 sont en pause."},
-    "linkedin":{nom:"LinkedIn · le cockpit du contrôleur de gestion",ordre:-1,domaine:"Visibilité",avancement:20,sante:"ok",statut:"en_cours",
-      etapes:[{f:true,t:"1 · Fil rouge et public cible"},{f:true,t:"2 · Démo ouverte aux invités"},{f:false,t:"3 · Guide gratuit « Ton premier agent IA »"},{f:false,t:"4 · Captures et vidéos"},{f:false,t:"5 · Série de 8 posts"},{f:false,t:"6 · Offre de formation"}],
-      prochaine:"Écrire le guide gratuit"},
-    "qg":{nom:"Projet 0 · Environnement de travail (QG Jarvis)",ordre:0,domaine:"Fondations",avancement:100,sante:"ok",statut:"en_cours",
-      etapes:[{f:true,t:"Tableau de bord temps réel"},{f:true,t:"Bureau 3D et conversation"},{f:true,t:"Noyau, orage et feuilles de route"},{f:true,t:"Tests ordinateur et iPhone"},{f:true,t:"Agents : point du lundi et veille"}],prochaine:"Terminé : entretien courant"},
-    "conseil":{nom:"Cabinet de conseil · offre",ordre:1,domaine:"Revenus",avancement:35,sante:"attention",statut:"en_cours",
-      etapes:[{f:true,t:"Promesse en une phrase"},{f:true,t:"Trois offres et leurs prix"},{f:false,t:"Deux cas clients"},{f:false,t:"Nouveau site"},{f:false,t:"Premier rendez-vous client"}],prochaine:"Rédiger deux cas clients"},
-    "controle-ca":{nom:"Outil de contrôle du CA",ordre:2,domaine:"Produit",avancement:11,sante:"ok",statut:"en_cours",
-      etapes:[{f:true,t:"Cahier des charges"},{f:false,t:"Socle"},{f:false,t:"Adaptateurs caisse et TPE"},{f:false,t:"Contrôles de base"},{f:false,t:"Restitution"}],prochaine:"Réunir un mois d'exports de test"},
-    "prospection":{nom:"Prospection et veille",ordre:3,domaine:"Clients",avancement:45,sante:"ok",statut:"en_cours",
-      etapes:[{f:true,t:"Définir la cible"},{f:true,t:"Pipeline de suivi"},{f:true,t:"Liste de 15 établissements"},{f:false,t:"Messages personnalisés"},{f:false,t:"Premier rendez-vous"}],prochaine:"Envoyer les 5 premiers messages"},
-    "ebook":{nom:"E-book « Ton premier agent IA »",ordre:4,domaine:"Contenu",avancement:0,sante:"ok",statut:"a_lancer",
-      etapes:[{f:false,t:"Plan"},{f:false,t:"Premier jet"},{f:false,t:"Mise en page"}],prochaine:"Écrire le plan"},
-    "youtube-pro":{nom:"Chaîne YouTube IA et gestion",ordre:13,statut:"attente",avancement:0},
-    "musique":{nom:"Musique sur GarageBand",ordre:20,statut:"loisir",avancement:0}
+    "boutique":{nom:"Boutique en ligne de céramique",ordre:0,domaine:"Revenus",avancement:45,sante:"ok",statut:"en_cours",
+      etapes:[{f:true,t:"Choisir le nom et le logo"},{f:true,t:"Photographier 20 pièces"},{f:false,t:"Mettre la boutique en ligne"},{f:false,t:"Première vente"}],prochaine:"Mettre la boutique en ligne"},
+    "trading":{nom:"Bots de trading (argent fictif)",ordre:1,domaine:"Argent",avancement:60,sante:"attention",statut:"en_cours",
+      etapes:[{f:true,t:"Règles de risque"},{f:true,t:"4 stratégies sur compte démo"},{f:false,t:"Cycle de 100 trades"},{f:false,t:"Bilan"}],prochaine:"Terminer le cycle 1"},
+    "certif":{nom:"Certification Power BI",ordre:2,domaine:"Formation",avancement:70,sante:"ok",statut:"en_cours",
+      etapes:[{f:true,t:"Modules 1 à 4"},{f:true,t:"Projet pratique"},{f:false,t:"Examen blanc"},{f:false,t:"Examen"}],prochaine:"Passer l'examen blanc"},
+    "newsletter":{nom:"Newsletter finance perso",ordre:3,domaine:"Contenu",avancement:20,sante:"attention",statut:"en_cours",
+      etapes:[{f:true,t:"Choisir la plateforme"},{f:false,t:"Écrire 3 numéros d'avance"},{f:false,t:"Lancer le premier envoi"}],prochaine:"Écrire le numéro 1"},
+    "semi":{nom:"Préparer un semi-marathon",ordre:4,domaine:"Santé",avancement:55,sante:"ok",statut:"en_cours",
+      etapes:[{f:true,t:"Plan de 12 semaines"},{f:true,t:"Semaines 1 à 6"},{f:false,t:"Semaines 7 à 12"},{f:false,t:"Course"}],prochaine:"Sortie longue de 15 km dimanche"},
+    "espagnol":{nom:"Apprendre l'espagnol",ordre:5,domaine:"Perso",avancement:30,sante:"ok",statut:"en_cours",
+      etapes:[{f:true,t:"Niveau A1"},{f:false,t:"Niveau A2"},{f:false,t:"Voyage à Séville"}],prochaine:"20 minutes par jour"},
+    "cuisine":{nom:"Rénover la cuisine",ordre:13,statut:"attente",avancement:0},
+    "guitare":{nom:"Guitare",ordre:20,statut:"loisir",avancement:0}
   };
   E.taches={
-    "t1":{titre:"Valider les 3 lots de mails du Concierge",projet:"qg",statut:"a_faire",echeance:day(0),ordre:1},
-    "t2":{titre:"Relancer Groupe Hôtelier Azur (candidature)",projet:"prospection",statut:"a_faire",echeance:day(0),ordre:2},
-    "t3":{titre:"Écrire le plan du guide gratuit",projet:"linkedin",statut:"a_faire",echeance:day(1),ordre:3},
+    "t1":{titre:"Valider les 3 lots de mails du Concierge",projet:"boutique",statut:"a_faire",echeance:day(0),ordre:1},
+    "t2":{titre:"Relancer Groupe Hôtelier Azur (candidature)",projet:"boutique",statut:"a_faire",echeance:day(0),ordre:2},
+    "t3":{titre:"Photographier les 5 dernières pièces",projet:"boutique",statut:"a_faire",echeance:day(1),ordre:3},
     "t4":{titre:"Faire le point sur le cycle 1 des stratégies",projet:"trading",statut:"a_faire",echeance:day(2),ordre:4},
-    "t5":{titre:"Rédiger le cas client « clôture en 3 jours »",projet:"conseil",statut:"a_faire",echeance:day(3),ordre:5},
-    "t6":{titre:"Envoyer 5 messages de prospection",projet:"prospection",statut:"a_faire",echeance:day(-1),ordre:6},
-    "t7":{titre:"Tourner la vidéo du tour du QG",projet:"linkedin",statut:"a_faire",echeance:day(4),ordre:7},
-    "t8":{titre:"Cahier des charges du contrôle CA",projet:"controle-ca",statut:"fait",echeance:day(-5),ordre:8}
+    "t5":{titre:"Passer l'examen blanc Power BI",projet:"certif",statut:"a_faire",echeance:day(3),ordre:5},
+    "t6":{titre:"Écrire le numéro 1 de la newsletter",projet:"newsletter",statut:"a_faire",echeance:day(-1),ordre:6},
+    "t7":{titre:"Sortie longue de 15 km",projet:"semi",statut:"a_faire",echeance:day(4),ordre:7},
+    "t8":{titre:"Plan d'entraînement de 12 semaines",projet:"semi",statut:"fait",echeance:day(-5),ordre:8}
   };
   const AG=(o)=>Object.assign({etat:"actif",notif:true,travail:false},o);
   E.agents={
-    "facteur":AG({artisan:"facteur",nom:"Le Facteur",ordre:0,debut:iso(70*M),dernier:iso(69*M),horaires:["18:52","20:52","22:52","00:52","02:52","04:52"],mission:"Le pont entre Jarvis et Claude : il exécute vraiment ce que Jarvis ne peut pas faire (recherches, réglages des agents, modifications du QG) et répond dans le courrier.",resume:"2 demandes traitées : liste de prospects enrichie, filtre « IA » ajouté à la veille.",rythme:"Toutes les 2 h le soir et la nuit"}),
-    "pilotage":AG({nom:"Jarvis · Pilotage",ordre:1,dernier:iso(5*M),mission:"Tient la carte des projets à jour et répond à tes questions depuis la console.",rythme:"À la demande"}),
+    "facteur":AG({artisan:"facteur",nom:"Le Facteur",ordre:0,debut:iso(70*M),dernier:iso(69*M),horaires:["18:52","20:52","22:52","00:52","02:52","04:52"],mission:"Le pont entre Cockpit et Claude : il exécute vraiment ce que Cockpit ne peut pas faire (recherches, réglages des agents, modifications du cockpit) et répond dans le courrier.",resume:"2 demandes traitées : liste de prospects enrichie, filtre « IA » ajouté à la veille.",rythme:"Toutes les 2 h le soir et la nuit"}),
+    "pilotage":AG({nom:"Cockpit · Pilotage",ordre:1,dernier:iso(5*M),mission:"Tient la carte des projets à jour et répond à tes questions depuis la console.",rythme:"À la demande"}),
     "veille-actus":AG({artisan:"journaliste",nom:"Veille actualités",ordre:3,debut:iso(3*H),dernier:iso(3*H-300000),horaires:["07:50"],mission:"Repère chaque matin les actualités qui touchent tes projets et t'envoie une brève avec les titres cliquables.",resume:"6 actus retenues ; à lire en premier : la facturation électronique côté PME.",rythme:"Chaque jour à 7 h 50"}),
     "chercheur-or":AG({artisan:"chercheur",nom:"Chercheur d'or",ordre:4,debut:iso(20*H),dernier:iso(20*H-240000),horaires:["18:23"],mission:"Repère chaque jour les nouveautés IA qui peuvent devenir un business et en tire des pistes concrètes ; le dimanche, classe les 3 meilleures.",resume:"2 pistes ajoutées ; meilleure du jour : audit « visibilité dans les IA » pour restaurants (7,5/10).",rythme:"Chaque jour à 18 h 23 · top 3 le dimanche"}),
     "emploi":AG({artisan:"recruteur",nom:"Chasseur d'offres",ordre:8,debut:iso(6*H),dernier:iso(6*H-900000),horaires:["05:37"],mission:"Cherche les offres de comptabilité, contrôle de gestion et analyse financière, note leur pertinence et propose pour chacune l'orientation du CV.",resume:"3 offres retenues : contrôleur de gestion chez Groupe Hôtelier Azur (8,5/10), FP&A chez Lumen Retail (7/10), analyste chez Nordvolt (7/10).",rythme:"Chaque nuit, 5 h 37"}),
@@ -640,12 +653,12 @@ const DEMO_DB=(()=>{
     "concierge":AG({artisan:"concierge",nom:"Le Concierge",ordre:12,debut:iso(2*H),dernier:iso(2*H-180000),horaires:["19:51","22:53","01:53","04:53"],mission:"Trie la boîte mail : propose chaque soir des lots à archiver, à mettre à la corbeille ou à relancer, suit les candidatures, et exécute pendant la nuit ce que tu as validé.",resume:"4 lots proposés : 48 mails à ranger, 2 relances ; 1 mail d'hameçonnage signalé.",rythme:"Proposition chaque soir à 19 h 51 · exécution la nuit"})
   };
   E.actus={
-    "a1":{date:day(0),titre:"Facturation électronique : les PME accélèrent leur préparation",resume:"Les petites entreprises choisissent leur plateforme de réception ; les cabinets signalent un afflux de demandes d'accompagnement.",impact:"Une porte d'entrée pour proposer un audit de la chaîne factures fournisseurs.",theme:"Finance",source:"Le Fil Éco (démo)",projet:"conseil",veille:"ciblee",url:"https://example.com/facturation-electronique"},
-    "a2":{date:day(0),titre:"Les agents IA entrent dans les services comptables",resume:"Rapprochements, relances clients, notes de frais : les premiers déploiements portent sur les tâches répétitives.",impact:"Exactement l'angle de ton offre : montrer un agent qui travaille.",theme:"IA",source:"IA Hebdo (démo)",projet:"linkedin",veille:"ciblee",url:"https://example.com/agents-ia-compta"},
-    "a3":{date:day(-1),titre:"Hôtellerie : les groupes indépendants recrutent des contrôleurs multi-sites",resume:"Plusieurs groupes de 5 à 15 hôtels structurent leur fonction finance après une année d'ouvertures.",impact:"Cible directe pour la prospection et la recherche d'emploi.",theme:"Hôtellerie",source:"Hôtel & Gestion (démo)",projet:"prospection",veille:"normale",url:"https://example.com/hotellerie-controleurs"},
+    "a1":{date:day(0),titre:"Facturation électronique : les PME accélèrent leur préparation",resume:"Les petites entreprises choisissent leur plateforme de réception ; les cabinets signalent un afflux de demandes d'accompagnement.",impact:"À vérifier pour la future boutique : réception des factures fournisseurs.",theme:"Finance",source:"Le Fil Éco (démo)",projet:"certif",veille:"ciblee",url:"https://example.com/facturation-electronique"},
+    "a2":{date:day(0),titre:"Les agents IA entrent dans les services comptables",resume:"Rapprochements, relances clients, notes de frais : les premiers déploiements portent sur les tâches répétitives.",impact:"Bon exemple à citer dans la newsletter.",theme:"IA",source:"IA Hebdo (démo)",projet:"certif",veille:"ciblee",url:"https://example.com/agents-ia-compta"},
+    "a3":{date:day(-1),titre:"Hôtellerie : les groupes indépendants recrutent des contrôleurs multi-sites",resume:"Plusieurs groupes de 5 à 15 hôtels structurent leur fonction finance après une année d'ouvertures.",impact:"Utile pour la recherche d'emploi.",theme:"Hôtellerie",source:"Hôtel & Gestion (démo)",projet:"boutique",veille:"normale",url:"https://example.com/hotellerie-controleurs"},
     "a4":{date:day(-1),titre:"Bitcoin : volatilité en hausse avant les chiffres de l'inflation",resume:"Les volumes grimpent ; les bots en compte démo restent sur leurs règles de risque.",impact:"Rien à changer : le cycle 1 continue.",theme:"Marchés",source:"Marchés Matin (démo)",projet:"trading",veille:"normale",url:"https://example.com/bitcoin-volatilite"},
-    "a5":{date:day(-2),titre:"Restauration : le titre-restaurant passe au tout numérique",resume:"Les cartes remplacent le papier ; les restaurateurs revoient leurs rapprochements d'encaissements.",impact:"Nouveau point de contrôle pour l'outil de contrôle du CA.",theme:"Restauration",source:"Le Fil Éco (démo)",projet:"controle-ca",veille:"normale",url:"https://example.com/titre-restaurant"},
-    "a6":{date:day(-2),titre:"Nouveau modèle d'IA : l'automatisation de bureau en vitrine",resume:"Les démonstrations montrent un agent qui remplit une note de frais de bout en bout.",impact:"Bon sujet de post pour la série LinkedIn.",theme:"IA",source:"IA Hebdo (démo)",projet:"linkedin",veille:"ciblee",url:"https://example.com/modele-ia"}
+    "a5":{date:day(-2),titre:"Restauration : le titre-restaurant passe au tout numérique",resume:"Les cartes remplacent le papier ; les restaurateurs revoient leurs rapprochements d'encaissements.",impact:"Sujet possible pour la newsletter.",theme:"Restauration",source:"Le Fil Éco (démo)",projet:"boutique",veille:"normale",url:"https://example.com/titre-restaurant"},
+    "a6":{date:day(-2),titre:"Nouveau modèle d'IA : l'automatisation de bureau en vitrine",resume:"Les démonstrations montrent un agent qui remplit une note de frais de bout en bout.",impact:"Sujet du prochain numéro de la newsletter.",theme:"IA",source:"IA Hebdo (démo)",projet:"newsletter",veille:"ciblee",url:"https://example.com/modele-ia"}
   };
   E.journal={
     "j1":{agent:"Le Trésorier",texte:"Compte démo à 101 460 € (+1,46 %), cycle 1 à 23/100 trades.",ts:iso(11*M)},
@@ -659,16 +672,16 @@ const DEMO_DB=(()=>{
     "j9":{agent:"L'Ingénieur",texte:"Stratégie 1 prête pour le cycle 1 : paramètres verrouillés.",ts:iso(26*H)}
   };
   E.depot={
-    "d1":{texte:"Ajouter un filtre « IA » à la veille du matin.",projet:"qg",statut:"traite",type:"demande",ts:iso(3*H),traite_le:iso(69*M),note:"Fait par le Facteur."},
-    "d2":{texte:"Préparer une liste de 10 groupes hôteliers en Île-de-France.",projet:"prospection",statut:"traite",type:"demande",ts:iso(5*H),traite_le:iso(70*M),note:"Liste ajoutée aux prospects."}
+    "d1":{texte:"Ajouter un filtre « IA » à la veille du matin.",projet:"newsletter",statut:"traite",type:"demande",ts:iso(3*H),traite_le:iso(69*M),note:"Fait par le Facteur."},
+    "d2":{texte:"Trouver 5 fournisseurs d'emballages écologiques.",projet:"boutique",statut:"traite",type:"demande",ts:iso(5*H),traite_le:iso(70*M),note:"Liste déposée dans le courrier."}
   };
   E.courrier={
     "c1":{demande:"Offres d'emploi du "+ddmm(0),type:"emploi",projet:"Recherche d'emploi",lu:false,ts:iso(6*H),
-      reponse:"Salut Rayan, 3 offres passent le filtre cette nuit. La meilleure : **contrôleur de gestion chez Groupe Hôtelier Azur** (8,5/10), poste multi-sites avec clôtures et reporting au DAF. Les deux autres : FP&A chez Lumen Retail (7/10) et analyste financier chez Nordvolt (7/10).",
+      reponse:"Salut, 3 offres passent le filtre cette nuit. La meilleure : **contrôleur de gestion chez Groupe Hôtelier Azur** (8,5/10), poste multi-sites avec clôtures et reporting au DAF. Les deux autres : FP&A chez Lumen Retail (7/10) et analyste financier chez Nordvolt (7/10).",
       sources:[{titre:"Contrôleur de gestion – Groupe Hôtelier Azur",url:"https://example.com/offre-azur"},{titre:"Analyste FP&A – Lumen Retail",url:"https://example.com/offre-lumen"},{titre:"Analyste financier – Nordvolt",url:"https://example.com/offre-nordvolt"}]},
     "c2":{demande:"Appels d'offres et missions du "+ddmm(0),type:"ao",projet:"prospection",lu:true,ts:iso(5*H),reponse:"4 annonces lues, 2 retenues : une mission FP&A de 6 mois en télétravail partiel (7/10) et un reporting budgétaire sous Power BI (6/10). Rien de pertinent côté marchés publics.",sources:[{titre:"Mission FP&A 6 mois",url:"https://example.com/mission-fpa"}]},
     "c3":{demande:"Ajoute un filtre « IA » à la veille",type:"demande",projet:"qg",lu:true,ts:iso(69*M),reponse:"C'est fait : la brève de demain matin ne gardera que les actus IA, puis la veille reviendra à la normale.",sources:[]},
-    "c4":{demande:"Brève du matin",type:"actus",projet:"qg",lu:true,ts:iso(3*H),reponse:"6 actus ce matin. À lire en premier : **les agents IA entrent dans les services comptables**, c'est pile l'angle de ta série LinkedIn.",sources:[{titre:"Les agents IA entrent dans les services comptables",url:"https://example.com/agents-ia-compta"}]}
+    "c4":{demande:"Brève du matin",type:"actus",projet:"qg",lu:true,ts:iso(3*H),reponse:"6 actus ce matin. À lire en premier : **les agents IA entrent dans les services comptables**, un bon sujet pour ta newsletter.",sources:[{titre:"Les agents IA entrent dans les services comptables",url:"https://example.com/agents-ia-compta"}]}
   };
   const th=(n,de,sujet)=>Array.from({length:n},(_,i)=>({date:ddmm(-(i%20)-1),de,id:"demo"+Math.random().toString(36).slice(2,10),sujet:sujet+(n>1?" ("+(i+1)+")":"")}));
   E.mail_lots={
@@ -717,13 +730,13 @@ const DEMO_DB=(()=>{
   const SO=(o)=>Object.assign({type:"evenement"},o);
   E.sorties={};
   E.sorties_jour={};
-  E.qg={"etat":{focus:"Priorité : lancer le guide gratuit et la série LinkedIn, le trading tourne en fond.",maj:iso(5*H)}};
+  E.qg={"etat":{focus:"Priorité de la semaine : mettre la boutique en ligne.",maj:iso(5*H)}};
   E.meteo={"paris":{temp:17,tmin:9,tmax:19,libelle:"Éclaircies",code:2,pluie_proba:10,vent:9,source:"Démo",maj:iso(40*M)}};
-  E.marches={"nasdaq":{indice:"Nasdaq Composite",valeur:27412.4,variation_pct:0.62,variation_pts:168.9,statut:"cloture",date_cotation:day(-1),source:"Démo",maj:iso(40*M)}};
+  E.marches={};
   E.veille={"filtres":{themes:[],mode:"prochain",maj:iso(D)}};
   E.trading={
     "etat":{broker:"Compte démo",capital:101460,capital_depart:100000,capital_debut_mois:100620,devise:"EUR",bot_actif:true,cycle_numero:1,cycle_trades:23,positions_ouvertes:1,statut:"2 bots actifs · cycle 1 à 23/100 trades",maj:iso(11*M),mois:day(0).slice(0,7)},
-    "parametres":{actifs:["EUR/USD","Nasdaq 100","Or","Bitcoin"],capital_fictif:100000,consignes:"Cycle 1 : on ne touche à rien avant 100 trades. Le détail des stratégies reste privé.",frais_par_ordre_pct:0.1,jours_max_cycle:42,mode:"autonome",par:"Claude",perte_max_bot_pct:15,perte_max_jour_pct:3,trades_par_cycle:100,unites:["1m","5m","15m","1h"],strategies:[{id:"perso",nom:"Stratégie 1",actif:"EUR/USD",unite:"1h",active:true,auteur:"Rayan",idee:""},{id:"ict",nom:"Stratégie 2",actif:"Nasdaq 100",unite:"15m",active:true,auteur:"Rayan",idee:""}],maj:iso(D)}
+    "parametres":{actifs:["EUR/USD","Nasdaq 100","Or","Bitcoin"],capital_fictif:100000,consignes:"Cycle 1 : on ne touche à rien avant 100 trades. Le détail des stratégies reste privé.",frais_par_ordre_pct:0.1,jours_max_cycle:42,mode:"autonome",par:"Claude",perte_max_bot_pct:15,perte_max_jour_pct:3,trades_par_cycle:100,unites:["1m","5m","15m","1h"],strategies:[{id:"perso",nom:"Stratégie 1",actif:"EUR/USD",unite:"1h",active:true,auteur:"Démo",idee:""},{id:"ict",nom:"Stratégie 2",actif:"Nasdaq 100",unite:"15m",active:true,auteur:"Démo",idee:""}],maj:iso(D)}
   };
 
   /* ---- moteur : collections, requêtes, écoutes en direct ---- */
@@ -793,7 +806,7 @@ const DEMO_DB=(()=>{
   const fTime=new Intl.DateTimeFormat("fr-FR",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
   const fHM=new Intl.DateTimeFormat("fr-FR",{hour:"2-digit",minute:"2-digit"});
   const salut=()=>{const hr=new Date().getHours();return hr<5||hr>=18?"Bonsoir":"Bonjour"};
-  function tick(){const d=new Date();$("clock").textContent=fTime.format(d);$("date").textContent=fDate.format(d);const g=salut();const el=$("greet");if(el.dataset.g!==g){el.dataset.g=g;el.replaceChildren(g+", ",h("em",{text:"Rayan"}),".")}}
+  function tick(){const d=new Date();$("clock").textContent=fTime.format(d);$("date").textContent=fDate.format(d);const g=salut();const el=$("greet");if(el.dataset.g!==g){el.dataset.g=g;el.replaceChildren("Bienvenue dans le ",h("em",{text:"cockpit"}),".")}}
   tick();setInterval(tick,1000);
   function rel(iso){const t=Date.parse(iso);if(!t)return "";const s=(Date.now()-t)/1000;if(s<60)return "à l'instant";if(s<3600)return "il y a "+Math.round(s/60)+" min";if(s<86400)return "il y a "+Math.round(s/3600)+" h";const d=Math.round(s/86400);if(d<7)return "il y a "+d+" j";return new Intl.DateTimeFormat("fr-FR",{day:"numeric",month:"short"}).format(new Date(t))}
   const fShort=new Intl.DateTimeFormat("fr-FR",{day:"2-digit",month:"2-digit"});
@@ -834,7 +847,7 @@ const DEMO_DB=(()=>{
 
   /* briefing */
   function briefing(){
-    const parts=[salut()+" Rayan."];
+    const parts=[salut()+"."];
     const m=S.meteo;if(m){const lib=m.libelle||wmo(m.code)[0];parts.push("À Paris, "+lib.toLowerCase()+", "+Math.round(m.temp)+" degrés en ce moment, entre "+Math.round(m.tmin)+" et "+Math.round(m.tmax)+" aujourd'hui."+(num(m.pluie_proba)>=60?" Prends un parapluie.":""))}
     const dir=S.etat&&S.etat.focus?str(S.etat.focus).replace(/[.\s]+$/,""):"";if(dir)parts.push("Ta directive : "+dir.replace(/^Cette semaine\s*:\s*/i,"").replace(/^./,c=>c.toLowerCase())+".");
     const open=S.taches.filter(t=>t.statut!=="fait").sort(byDue);
@@ -887,7 +900,7 @@ const DEMO_DB=(()=>{
   const UNITES=["1m","3m","5m","15m","1h"];
   const arr=v=>Array.isArray(v)?v:[];
   function tp(){return Object.assign({},TP_DEF,S.tparams||{})}
-  async function saveParams(next,source){if(!S.db||!S.canWrite)throw new Error("Écriture impossible dans cette vue du QG.");const doc=Object.assign({},TP_DEF,S.tparams||{},next,{maj:new Date().toISOString(),par:source||"Rayan"});await S.db.doc("trading/parametres").set(doc);try{await S.db.collection("journal").doc(newId("j")).set({ts:new Date().toISOString(),agent:"L'Ingénieur",texte:"Paramètres des bots modifiés ("+(source||"Rayan")+")."})}catch(e){}}
+  async function saveParams(next,source){if(!S.db||!S.canWrite)throw new Error("Écriture impossible dans cette vue du cockpit.");const doc=Object.assign({},TP_DEF,S.tparams||{},next,{maj:new Date().toISOString(),par:source||"Démo"});await S.db.doc("trading/parametres").set(doc);try{await S.db.collection("journal").doc(newId("j")).set({ts:new Date().toISOString(),agent:"L'Ingénieur",texte:"Paramètres des bots modifiés ("+(source||"Démo")+")."})}catch(e){}}
   function paramsView(px,onSaved){
     const p=tp(),dis=!S.canWrite;
     const st={mode:p.mode==="validation"?"validation":"autonome",actifs:arr(p.actifs).map(String),unites:arr(p.unites).map(String),strategies:arr(p.strategies).map(x=>Object.assign({},x))};
@@ -920,14 +933,14 @@ const DEMO_DB=(()=>{
     const sIdee=h("textarea",{id:px+"-sidee",placeholder:"L'idée : quand entrer, quand sortir, quel stop.","aria-label":"Idée de la stratégie",disabled:dis});
     const sAct=h("select",{id:px+"-sact","aria-label":"Actif",disabled:dis}),sUn=h("select",{id:px+"-sun","aria-label":"Unité de temps",disabled:dis});
     function paintSel(){const a=sAct.value,u=sUn.value;sAct.replaceChildren(...st.actifs.map(v=>h("option",{value:v,text:v})));sUn.replaceChildren(...(st.unites.length?st.unites:UNITES).map(v=>h("option",{value:v,text:v})));if(st.actifs.includes(a))sAct.value=a;if([...sUn.options].some(o=>o.value===u))sUn.value=u}
-    const addS=()=>{const nom=sNom.value.trim().slice(0,60);if(!nom){sNom.focus();return}st.strategies.push({id:newId("s"),nom,idee:sIdee.value.trim().slice(0,600),actif:sAct.value||"",unite:sUn.value||"",active:true,auteur:"Rayan"});sNom.value="";sIdee.value="";touch();paintS()};
+    const addS=()=>{const nom=sNom.value.trim().slice(0,60);if(!nom){sNom.focus();return}st.strategies.push({id:newId("s"),nom,idee:sIdee.value.trim().slice(0,600),actif:sAct.value||"",unite:sUn.value||"",active:true,auteur:"Démo"});sNom.value="";sIdee.value="";touch();paintS()};
     const cons=h("textarea",{id:px+"-cons",placeholder:"Ce que l'Ingénieur doit savoir ou éviter.","aria-label":"Consignes pour l'Ingénieur",disabled:dis});cons.value=str(p.consignes);
     paintMode();paintAct();paintU();paintS();paintSel();
     const saveBtn=h("button",{class:"btn",type:"button",text:"Enregistrer",disabled:dis,onclick:async()=>{
       const n=(i,d)=>{const v=Number(i.value);return isFinite(v)?v:d};
       const next={mode:st.mode,trades_par_cycle:Math.max(10,Math.round(n(iTr,100))),jours_max_cycle:Math.max(1,Math.round(n(iJm,14))),filtre_historique_semaines:Math.max(1,Math.round(n(iFh,4))),frais_par_ordre_pct:Math.max(0,n(iFr,.1)),capital_fictif:Math.max(100,Math.round(n(iCa,10000))),perte_max_bot_pct:Math.max(1,n(iPb,15)),perte_max_jour_pct:Math.max(.5,n(iPj,3)),actifs:st.actifs,unites:st.unites,strategies:st.strategies,consignes:cons.value.trim().slice(0,1500)};
       saveBtn.disabled=true;msg.textContent="Enregistrement…";
-      try{await saveParams(next,"Rayan");delete root.dataset.dirty;msg.textContent="Enregistré. L'Ingénieur s'en servira à son prochain cycle.";onSaved&&onSaved()}catch(e){msg.textContent="Échec : "+str(e&&e.message)}finally{saveBtn.disabled=dis}}});
+      try{await saveParams(next,"Démo");delete root.dataset.dirty;msg.textContent="Enregistré. L'Ingénieur s'en servira à son prochain cycle.";onSaved&&onSaved()}catch(e){msg.textContent="Échec : "+str(e&&e.message)}finally{saveBtn.disabled=dis}}});
     root.append(
       h("p",{class:"hint2",text:"L'Ingénieur relit ces réglages au début de chaque cycle. Les limites de risque sont les tiennes : il n'a pas le droit de les changer."}),
       h("section",{class:"fp-sec"},h("span",{class:"label",text:"Mode"}),modeSeg,h("p",{class:"note",text:st.mode==="autonome"?"Il applique ses modifications seul sur le compte démo.":"Il te propose chaque modification dans le courrier et attend ton accord."})),
@@ -944,10 +957,10 @@ const DEMO_DB=(()=>{
   /* ---------- veille ciblée : sujets lus par le Journaliste au début de son prochain passage (veille/filtres) ---------- */
   const VF_THEMES=["IA","Or","Nasdaq","Bitcoin","EUR/USD","Hôtellerie","Restauration","Réglementation","Emploi finance","Marchés"];
   const vf=()=>Object.assign({themes:[],mode:"prochain"},S.vfiltres||{});
-  async function saveVF(next,source){if(!S.db||!S.canWrite)throw new Error("Écriture impossible dans cette vue du QG.");
-    const doc=Object.assign({},vf(),next,{maj:new Date().toISOString(),par:source||"Rayan"});doc.themes=arr(doc.themes).map(t=>str(t).trim().slice(0,40)).filter(Boolean).slice(0,8);doc.mode=doc.mode==="permanent"?"permanent":"prochain";
+  async function saveVF(next,source){if(!S.db||!S.canWrite)throw new Error("Écriture impossible dans cette vue du cockpit.");
+    const doc=Object.assign({},vf(),next,{maj:new Date().toISOString(),par:source||"Démo"});doc.themes=arr(doc.themes).map(t=>str(t).trim().slice(0,40)).filter(Boolean).slice(0,8);doc.mode=doc.mode==="permanent"?"permanent":"prochain";
     await S.db.doc("veille/filtres").set(doc);
-    try{await S.db.collection("journal").doc(newId("j")).set({ts:new Date().toISOString(),agent:"Veille actualités",texte:doc.themes.length?"Veille ciblée sur "+doc.themes.join(", ")+(doc.mode==="permanent"?" jusqu'à nouvel ordre":" au prochain passage")+" ("+(source||"Rayan")+").":"Filtres retirés : veille normale ("+(source||"Rayan")+")."})}catch(e){}}
+    try{await S.db.collection("journal").doc(newId("j")).set({ts:new Date().toISOString(),agent:"Veille actualités",texte:doc.themes.length?"Veille ciblée sur "+doc.themes.join(", ")+(doc.mode==="permanent"?" jusqu'à nouvel ordre":" au prochain passage")+" ("+(source||"Démo")+").":"Filtres retirés : veille normale ("+(source||"Démo")+")."})}catch(e){}}
   function nextAtTxt(ag){if(!ag||!Array.isArray(ag.horaires)||!ag.horaires.length)return"";const now=new Date();let best=null;
     for(const hm of ag.horaires){const [H,Mi]=String(hm).split(":").map(Number);if(!isFinite(H))continue;const d=new Date();d.setHours(H,Mi||0,0,0);if(d<=now)d.setDate(d.getDate()+1);if(!best||d<best)best=d}
     if(!best)return"";return(best.toDateString()===now.toDateString()?"aujourd'hui":"demain")+" à "+fHM.format(best)}
@@ -966,7 +979,7 @@ const DEMO_DB=(()=>{
     const paintM=()=>modeSeg.replaceChildren(...[["prochain","Prochain passage"],["permanent","Jusqu'à nouvel ordre"]].map(([k,l])=>h("button",{type:"button","aria-pressed":String(st.mode===k),disabled:dis,text:l,onclick:()=>{st.mode=k;touch();paintM()}})));
     paint();paintM();
     let btns=[];
-    const done=async(next,okTxt)=>{btns.forEach(b=>b.disabled=true);msg.textContent="Enregistrement…";try{await saveVF(next,"Rayan");delete root.dataset.dirty;msg.textContent=okTxt;onSaved&&onSaved()}catch(e){msg.textContent="Échec : "+str(e&&e.message)}finally{btns.forEach(b=>b.disabled=dis)}};
+    const done=async(next,okTxt)=>{btns.forEach(b=>b.disabled=true);msg.textContent="Enregistrement…";try{await saveVF(next,"Démo");delete root.dataset.dirty;msg.textContent=okTxt;onSaved&&onSaved()}catch(e){msg.textContent="Échec : "+str(e&&e.message)}finally{btns.forEach(b=>b.disabled=dis)}};
     const save=h("button",{class:"btn",type:"button",text:"Enregistrer",disabled:dis,onclick:()=>done({themes:st.themes,mode:st.mode},st.themes.length?"Enregistré. Le Journaliste ciblera ces sujets à son prochain passage.":"Enregistré : veille normale.")});
     const clear=h("button",{class:"btn ghost",type:"button",text:"Veille normale",disabled:dis,onclick:()=>{st.themes=[];st.mode="prochain";paint();paintM();done({themes:[],mode:"prochain"},"Filtres retirés : veille normale au prochain passage.")}});
     btns=[save,clear];
@@ -986,13 +999,13 @@ const DEMO_DB=(()=>{
   const PISTE_ST={nouvelle:["Nouvelle","p-dim"],top3:["Top 3 · à décider","p-warn"],gardee:["Gardée · en attente","p-ok"],ecartee:["Écartée","p-dim"]};
   const pistesSemaine=()=>{const wk=Date.now()-7*864e5;return S.pistes.filter(x=>Date.parse(x.ts)>=wk)};
   const pistesTop=()=>S.pistes.filter(x=>x.statut==="top3").sort((a,b)=>(Number(a.top3_rang)||9)-(Number(b.top3_rang)||9));
-  async function decidePiste(pi,st,source){if(!S.db||!S.canWrite)throw new Error("Écriture impossible dans cette vue du QG.");
-    const up={statut:st,decide_ts:new Date().toISOString(),decide_par:source||"Rayan"};
+  async function decidePiste(pi,st,source){if(!S.db||!S.canWrite)throw new Error("Écriture impossible dans cette vue du cockpit.");
+    const up={statut:st,decide_ts:new Date().toISOString(),decide_par:source||"Démo"};
     if(st==="gardee"&&!pi.projet_id){up.projet_id=await creerProjet(str(pi.titre).slice(0,80),"attente",false)}
     await S.db.doc("pistes/"+pi.id).update(up);
     try{await S.db.collection("journal").doc(newId("j")).set({ts:new Date().toISOString(),agent:"Chercheur d'or",texte:(st==="gardee"?"Piste gardée (projet en attente) : ":"Piste écartée : ")+str(pi.titre)})}catch(e){}}
   function pisteActs(pi){if(pi.statut==="gardee"||pi.statut==="ecartee")return h("p",{class:"note",text:(pi.statut==="gardee"?"Gardée":"Écartée")+(pi.decide_ts?" "+rel(pi.decide_ts):"")+(pi.statut==="gardee"?" · elle est dans la forêt, en graine « en attente ».":"")});
-    const msg=h("p",{class:"note"});const go=async st=>{acts.querySelectorAll("button").forEach(b=>b.disabled=true);msg.textContent="Enregistrement…";try{await decidePiste(pi,st,"Rayan");msg.textContent=st==="gardee"?"Gardée : ajoutée en projet « en attente ».":"Écartée."}catch(e){msg.textContent=str(e&&e.message);acts.querySelectorAll("button").forEach(b=>b.disabled=false)}};
+    const msg=h("p",{class:"note"});const go=async st=>{acts.querySelectorAll("button").forEach(b=>b.disabled=true);msg.textContent="Enregistrement…";try{await decidePiste(pi,st,"Démo");msg.textContent=st==="gardee"?"Gardée : ajoutée en projet « en attente ».":"Écartée."}catch(e){msg.textContent=str(e&&e.message);acts.querySelectorAll("button").forEach(b=>b.disabled=false)}};
     const acts=h("div",{class:"acts"},h("button",{class:"btn",type:"button",text:"Garder (en attente)",disabled:!S.canWrite,onclick:()=>go("gardee")}),h("button",{class:"btn no",type:"button",text:"Écarter",disabled:!S.canWrite,onclick:()=>go("ecartee")}));
     return h("div",{class:"fp-sec"},acts,msg)}
   function pisteItem(pi){const n=Number(pi.note)||0,st=PISTE_ST[pi.statut]||PISTE_ST.nouvelle;
@@ -1138,7 +1151,7 @@ const DEMO_DB=(()=>{
   const CAND={envoyee:["Envoyée","p-dim"],recue:["Reçue","p-dim"],en_cours:["En étude","p-cyan"],entretien:["Entretien","p-ok"],test:["Test","p-ok"],offre:["Offre","p-ok live"],refus:["Refus","p-crit"],relancee:["Relancée","p-warn"],sans_reponse:["Sans réponse","p-warn"]};
   const lotThreads=l=>Array.isArray(l.threads)?l.threads.filter(t=>t&&t.id):[];
   const gmUrl=id=>"https://mail.google.com/mail/u/0/#all/"+encodeURIComponent(str(id));
-  async function decideLot(l,statut,extra){if(!S.db||!S.canWrite)throw new Error("Écriture impossible dans cette vue du QG.");
+  async function decideLot(l,statut,extra){if(!S.db||!S.canWrite)throw new Error("Écriture impossible dans cette vue du cockpit.");
     const up=Object.assign({statut,decide_ts:new Date().toISOString()},extra||{});await S.db.doc("mail_lots/"+l.id).update(up)}
   const aDecider=()=>S.lots.filter(l=>l.statut==="propose");
   function lotCard(l){const k=LOT_KIND[l.action]||[str(l.action),"p-dim","#8aa0b0","Valider"];const th=lotThreads(l),nb=Number(l.nb)||th.length;
@@ -1195,14 +1208,14 @@ const DEMO_DB=(()=>{
   const ordOf=p=>Number(p.ordre)||0;
   const byOrd=(a,b)=>ordOf(a)-ordOf(b);
   function rankOf(p){const l=actifs().slice().sort((a,b)=>(a.statut==="en_cours"?0:1)-(b.statut==="en_cours"?0:1)||byOrd(a,b));const i=l.findIndex(x=>x.id===p.id);return i<0?null:[i+1,l.length]}
-  async function pjWrite(id,data){if(!S.db||!S.canWrite)throw new Error("Écriture impossible dans cette vue du QG.");await S.db.doc("projets/"+id).update(data)}
+  async function pjWrite(id,data){if(!S.db||!S.canWrite)throw new Error("Écriture impossible dans cette vue du cockpit.");await S.db.doc("projets/"+id).update(data)}
   async function pjLog(texte){try{await S.db.collection("journal").doc(newId("j")).set({ts:new Date().toISOString(),agent:"Pilotage",texte})}catch(e){}}
   async function setStatut(p,k){if(p.statut===k)return;await pjWrite(p.id,{statut:k});pjLog(p.nom+" passe en « "+statutLabel(k)+" »")}
   async function setPriorite(p,mode){
     if(mode==="absolue"){const m=Math.min(...S.projets.map(ordOf));const up={ordre:m-1};if(p.statut==="attente"||p.statut==="loisir"||p.statut==="a_lancer")up.statut="en_cours";await pjWrite(p.id,up);pjLog(p.nom+" devient la priorité n° 1");return}
     const grp=S.projets.filter(x=>x.statut===p.statut).sort(byOrd);const i=grp.findIndex(x=>x.id===p.id);const j=mode==="monter"?i-1:i+1;if(i<0||j<0||j>=grp.length)return;
     const o=grp[j];let a=ordOf(p),b=ordOf(o);if(a===b)b=a+(mode==="monter"?-1:1);await pjWrite(p.id,{ordre:b});await pjWrite(o.id,{ordre:a})}
-  async function creerProjet(nom,statut,absolue){nom=str(nom).trim().slice(0,90);if(!nom)throw new Error("Nom vide");if(!S.db||!S.canWrite)throw new Error("Écriture impossible dans cette vue du QG.");
+  async function creerProjet(nom,statut,absolue){nom=str(nom).trim().slice(0,90);if(!nom)throw new Error("Nom vide");if(!S.db||!S.canWrite)throw new Error("Écriture impossible dans cette vue du cockpit.");
     const st=STATUTS.some(x=>x[0]===statut)?statut:"en_cours";const ords=S.projets.map(ordOf);const ordre=absolue?Math.min(0,...ords)-1:Math.max(0,...ords)+1;
     const slug=nom.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,30)||"projet";
     const id=S.projets.some(x=>x.id===slug)?slug+"-"+Date.now().toString(36).slice(-4):slug;
@@ -1229,7 +1242,7 @@ const DEMO_DB=(()=>{
     const el=$("tasks");if(!S.loaded.has("taches"))return;
     const list=[...S.taches].sort((a,b)=>(a.statut==="fait")-(b.statut==="fait")||byDue(a,b));
     $("taskCount").textContent=list.length?list.filter(t=>t.statut==="fait").length+" / "+list.length+" faites":"";
-    el.replaceChildren(...(list.length?list.map(taskRow):[h("li",{class:"empty",text:"Aucune action cette semaine. Demande à Jarvis d'en ajouter une."})]));
+    el.replaceChildren(...(list.length?list.map(taskRow):[h("li",{class:"empty",text:"Aucune action cette semaine. Demande au cockpit d'en ajouter une."})]));
   }
   const pending=new Set();
   async function toggleTask(t){if(!S.db||!S.canWrite||pending.has(t.id))return;pending.add(t.id);try{await S.db.doc("taches/"+t.id).update({statut:t.statut==="fait"?"a_faire":"fait"})}catch(e){if(e&&e.code==="invalid_argument"){S.canWrite=false;renderTasks()}}finally{pending.delete(t.id)}}
@@ -1241,7 +1254,7 @@ const DEMO_DB=(()=>{
   function renderLog(){const el=$("log");if(!S.loaded.has("journal"))return;
     el.replaceChildren(...(S.journal.length?S.journal.map(j=>h("li",null,h("span",{class:"ts",text:rel(j.ts)}),h("div",null,h("span",{class:"ag",text:str(j.agent)}),str(j.texte)))):[h("li",{class:"empty",text:"Le journal est vide."})]))}
   function renderDepot(){const el=$("depot");if(!S.loaded.has("depot"))return;const list=S.depot.filter(d=>d.statut!=="traite");
-    el.replaceChildren(...(list.length?list.map(d=>h("li",null,h("span",{class:"pill "+(d.type==="demande"?"p-cyan":"p-dim"),text:d.type==="demande"?"Pour Claude":"Idée"}),h("span",{text:str(d.texte)}),h("span",{class:"when",text:rel(d.ts)+(d.projet?" · "+projName(d.projet):"")}))):[h("li",{class:"empty",text:"Vide. Dis à Jarvis « note une idée » ou « demande à Claude de… »."})]))}
+    el.replaceChildren(...(list.length?list.map(d=>h("li",null,h("span",{class:"pill "+(d.type==="demande"?"p-cyan":"p-dim"),text:d.type==="demande"?"Pour Claude":"Idée"}),h("span",{text:str(d.texte)}),h("span",{class:"when",text:rel(d.ts)+(d.projet?" · "+projName(d.projet):"")}))):[h("li",{class:"empty",text:"Vide. Dis au cockpit « note une idée » ou « demande à Claude de… »."})]))}
   function renderPark(){if(!S.loaded.has("projets"))return;const fill=(id,st,e)=>{const l=S.projets.filter(p=>p.statut===st);$(id).replaceChildren(...(l.length?l.map(p=>h("li",{style:"cursor:pointer",title:"Ouvrir pour changer le statut",onclick:()=>{setView("bureau");scene3d.focus("project",p.id)},text:str(p.nom)})):[h("li",{text:e})]))};fill("attente","attente","Rien en attente");fill("loisirs","loisir","Aucun loisir noté")}
   function renderAll(){renderPistes();renderBots();renderParams();renderVF();renderCourrier();renderLots();renderSorties();renderEnv();renderBrief();renderOps();renderTasks();renderAgents();renderNews();renderLog();renderDepot();renderPark();scene3d.redraw()}
   setInterval(()=>{renderLog();renderAgents();renderDepot();renderEnv()},60000);
@@ -1373,7 +1386,7 @@ const DEMO_DB=(()=>{
     const outs=new THREE.Mesh(new THREE.PlaneGeometry(3,4),new THREE.MeshBasicMaterial({map:outTex,side:THREE.DoubleSide}));outs.position.set(6.4,3.9,-5.15);scene.add(outs);
     const outsFrame=frame(3,4,6.4,3.9,-5.13);outs.position.y=-60;outs.visible=false;outsFrame.visible=false;
 
-    /* noyau Jarvis */
+    /* cœur du cockpit */
     const NOISE="vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}float snoise(vec3 v){const vec2 C=vec2(1.0/6.0,1.0/3.0);const vec4 D=vec4(0.0,0.5,1.0,2.0);vec3 i=floor(v+dot(v,C.yyy));vec3 x0=v-i+dot(i,C.xxx);vec3 g=step(x0.yzx,x0.xyz);vec3 l=1.0-g;vec3 i1=min(g.xyz,l.zxy);vec3 i2=max(g.xyz,l.zxy);vec3 x1=x0-i1+C.xxx;vec3 x2=x0-i2+C.yyy;vec3 x3=x0-D.yyy;i=mod289(i);vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));float n_=0.142857142857;vec3 ns=n_*D.wyz-D.xzx;vec4 j=p-49.0*floor(p*ns.z*ns.z);vec4 x_=floor(j*ns.z);vec4 y_=floor(j-7.0*x_);vec4 x=x_*ns.x+ns.yyyy;vec4 y=y_*ns.x+ns.yyyy;vec4 h=1.0-abs(x)-abs(y);vec4 b0=vec4(x.xy,y.xy);vec4 b1=vec4(x.zw,y.zw);vec4 s0=floor(b0)*2.0+1.0;vec4 s1=floor(b1)*2.0+1.0;vec4 sh=-step(h,vec4(0.0));vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy;vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;vec3 p0=vec3(a0.xy,h.x);vec3 p1=vec3(a0.zw,h.y);vec3 p2=vec3(a1.xy,h.z);vec3 p3=vec3(a1.zw,h.w);vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));p0*=norm.x;p1*=norm.y;p2*=norm.z;p3*=norm.w;vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0);m=m*m;return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));}";
     const coreU={uTime:{value:0},uColA:{value:new THREE.Color(0x1f6fff)},uColB:{value:new THREE.Color(0x57d3f2)},uEnergy:{value:.2},uSpeed:{value:.35},uBright:{value:1}};
     const plasmaMat=new THREE.ShaderMaterial({uniforms:coreU,
@@ -1890,7 +1903,7 @@ const DEMO_DB=(()=>{
         a.f.armL.sh.rotation.x=-1.05+(mode==="work"?Math.sin(t*10)*.05:0);a.f.armL.el.rotation.x=-.55;a.f.armL.sh.rotation.z=.25;
         a.f.armR.sh.rotation.x=-1.05+(mode==="work"?Math.sin(t*10+1)*.05:0);a.f.armR.el.rotation.x=-.55;a.f.armR.sh.rotation.z=-.25}};
     };
-    const ARTISAN_INFO={chercheur:["Le Chercheur d'or","Pistes de business IA"],concierge:["Le Concierge","Tri de la boîte mail"],ingenieur:["L'Ingénieur","Code et améliore les bots"],tresorier:["Le Trésorier","Bots de trading"],recruteur:["Le Recruteur","Chasseur d'offres d'emploi"],plume:["La Plume","Posts LinkedIn"],facteur:["Le Facteur","Relève le courrier de Jarvis"],astronome:["L'Astronome","Météo et marchés"],cartographe:["Le Cartographe","Sorties à Paris"],journaliste:["Le Journaliste","Veille actualités"],horloger:["L'Horloger","Point du lundi"],archiviste:["L'Archiviste","Appels d'offres"],pecheur:["Le Pêcheur","Prospection"]};
+    const ARTISAN_INFO={chercheur:["Le Chercheur d'or","Pistes de business IA"],concierge:["Le Concierge","Tri de la boîte mail"],ingenieur:["L'Ingénieur","Code et améliore les bots"],tresorier:["Le Trésorier","Bots de trading"],recruteur:["Le Recruteur","Chasseur d'offres d'emploi"],plume:["La Plume","Posts LinkedIn"],facteur:["Le Facteur","Relève le courrier du cockpit"],astronome:["L'Astronome","Météo et marchés"],cartographe:["Le Cartographe","Sorties à Paris"],journaliste:["Le Journaliste","Veille actualités"],horloger:["L'Horloger","Point du lundi"],archiviste:["L'Archiviste","Appels d'offres"],pecheur:["Le Pêcheur","Prospection"]};
     function artisanMode(ag){if(!ag||ag.etat!=="actif")return"off";const fresh=ag.debut&&(Date.now()-Date.parse(ag.debut))<45*60000;return ag.travail&&fresh?"work":"idle"}
     function nextRun(ag){if(!ag||!Array.isArray(ag.horaires)||!ag.horaires.length)return"";const now=new Date();let best=null;for(const hm of ag.horaires){const [H,Mi]=String(hm).split(":").map(Number);const d=new Date();d.setHours(H,Mi,0,0);if(d<=now)d.setDate(d.getDate()+1);if(!best||d<best)best=d}return best?fHM.format(best):""}
     function syncArtisans(){
@@ -1941,7 +1954,7 @@ const DEMO_DB=(()=>{
         if(n!==""&&n!==0){x.fillStyle=c;x.font="600 22px 'JetBrains Mono', monospace";x.textAlign="right";x.fillText(String(n),272,y);x.textAlign="left"}});
       // liste
       const L=330,R=W-30,rh=74;let y=124;
-      x.fillStyle="#8aa0b0";x.font="500 20px 'JetBrains Mono', monospace";x.fillText(todo.length?todo.length+" LOT"+(todo.length>1?"S":"")+" À VALIDER DANS LE QG":"BOÎTE À JOUR · SUIVI DES CANDIDATURES",L,y);y+=22;
+      x.fillStyle="#8aa0b0";x.font="500 20px 'JetBrains Mono', monospace";x.fillText(todo.length?todo.length+" LOT"+(todo.length>1?"S":"")+" À VALIDER DANS LE COCKPIT":"BOÎTE À JOUR · SUIVI DES CANDIDATURES",L,y);y+=22;
       if(!rows.length){x.fillStyle="#526676";x.font="500 30px Manrope, sans-serif";x.fillText("Le Concierge trie ta boîte chaque soir à 19 h 51.",L,y+90);x.fillText("Les mails à ranger s'afficheront ici.",L,y+134)}
       const vis=rows.slice(0,9);const hi=vis.length?mailHi%vis.length:-1;
       vis.forEach((r,i)=>{const yy=y+i*rh;
@@ -1979,7 +1992,7 @@ const DEMO_DB=(()=>{
     (function office(){
       const add=(m,x,y,z)=>{m.position.set(x,y,z);scene.add(m);return m};
       const darkMetal=SM(0x0e1822,{metalness:.75,roughness:.3,flatShading:false});
-      // estrade et console autour de Jarvis (ouverte vers l'avant)
+      // estrade et console autour du cockpit (ouverte vers l'avant)
       add(new THREE.Mesh(new THREE.CylinderGeometry(2.3,2.4,.12,64),darkMetal),0,.06,0);
       const er=new THREE.Mesh(new THREE.TorusGeometry(2.33,.012,6,128),additive(0x57d3f2,.7));er.rotation.x=-Math.PI/2;add(er,0,.125,0);
       const conM=new THREE.MeshStandardMaterial({color:0x101b26,metalness:.7,roughness:.35,side:THREE.DoubleSide});
@@ -1994,7 +2007,7 @@ const DEMO_DB=(()=>{
       // enseignes néon
       function neon(text,w,hgt,col,x,y,z,ry){const cw=1024,ch=Math.round(cw*hgt/w);const c=document.createElement("canvas");c.width=cw;c.height=ch;const g=c.getContext("2d");g.font="600 "+Math.round(ch*.62)+"px 'Chakra Petch', sans-serif";g.textAlign="center";g.textBaseline="middle";g.shadowColor=col;g.shadowBlur=ch*.18;g.fillStyle=col;g.fillText(text,cw/2,ch/2);
         const m=new THREE.Mesh(new THREE.PlaneGeometry(w,hgt),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthWrite:false,opacity:.7,color:0xb0b0b0,side:THREE.DoubleSide}));m.position.set(x,y,z);m.rotation.y=ry||0;scene.add(m);return m}
-      neon("QG · JARVIS",4.2,.7,"#57d3f2",0,7.25,-5.12);
+      neon("COCKPIT",4.2,.7,"#57d3f2",0,7.25,-5.12);
       neon("VEILLE",2.0,.45,"#57d3f2",-6.4,6.3,-5.12);
       neon("UNITÉ CYBORG · AGENTS",3.8,.42,"#ff3d7f",-3.28,2.75,3.8,Math.PI/2);
       neon("ACCUEIL",1.4,.3,"#f2c230",-4.8,2.75,10.8,Math.PI/2);
@@ -2113,7 +2126,7 @@ const DEMO_DB=(()=>{
 
     /* menu : le poste de Rayan */
     const deskLab=makeLabel(1.4,.3,640,136);deskLab.s.position.set(0,2.15,8.55);scene.add(deskLab.s);
-    (function(){const x=deskLab.c.getContext("2d");x.fillStyle="rgba(5,10,16,.85)";x.fillRect(0,12,640,112);x.fillStyle="#57d3f2";x.fillRect(0,12,8,112);x.fillStyle="#dbe6ee";x.font="600 40px 'Chakra Petch', sans-serif";x.fillText("TON POSTE",26,60);x.fillStyle="#57d3f2";x.font="500 27px 'JetBrains Mono', monospace";x.fillText("MENU DU QG · CLIQUE ICI",26,104);deskLab.t.needsUpdate=true})();
+    (function(){const x=deskLab.c.getContext("2d");x.fillStyle="rgba(5,10,16,.85)";x.fillRect(0,12,640,112);x.fillStyle="#57d3f2";x.fillRect(0,12,8,112);x.fillStyle="#dbe6ee";x.font="600 40px 'Chakra Petch', sans-serif";x.fillText("TON POSTE",26,60);x.fillStyle="#57d3f2";x.font="500 27px 'JetBrains Mono', monospace";x.fillText("MENU DU COCKPIT · CLIQUE ICI",26,104);deskLab.t.needsUpdate=true})();
 
     /* lampadaires de coin : un clic = point de vue sur toute la pièce */
     const LAMPS=[{x:XL+.55,z:-4.85,nm:"Coin fond · labo des agents",c:0x57d3f2},{x:XR-.55,z:-4.85,nm:"Coin fond · forêt",c:0x57d3f2},{x:XL+.55,z:16.0,nm:"Coin entrée · accueil",c:0xff3d7f},{x:XR-.55,z:16.0,nm:"Coin entrée · réunion",c:0xff3d7f}];
@@ -2230,7 +2243,7 @@ const DEMO_DB=(()=>{
       const W=1920,H=1080,x=bx;x.clearRect(0,0,W,H);
       const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#0b1824");g.addColorStop(1,"#060c12");x.fillStyle=g;x.fillRect(0,0,W,H);
       x.strokeStyle="rgba(87,211,242,.05)";x.lineWidth=1;for(let i=0;i<W;i+=48){x.beginPath();x.moveTo(i,0);x.lineTo(i,H);x.stroke()}for(let j=0;j<H;j+=48){x.beginPath();x.moveTo(0,j);x.lineTo(W,j);x.stroke()}
-      x.fillStyle=C.cyan;x.font="500 26px 'JetBrains Mono', monospace";x.fillText("QG · JARVIS  /  OBJECTIFS",80,86);
+      x.fillStyle=C.cyan;x.font="500 26px 'JetBrains Mono', monospace";x.fillText("COCKPIT  /  OBJECTIFS",80,86);
       x.textAlign="right";x.fillStyle=C.muted;let hdr=fDate.format(new Date()).toUpperCase();if(S.meteo)hdr+="   ·   PARIS "+Math.round(S.meteo.temp)+"°  "+str(S.meteo.libelle||wmo(S.meteo.code)[0]).toUpperCase();if(S.ndq)hdr+="   ·   NASDAQ "+nf0.format(S.ndq.valeur)+" "+(Number(S.ndq.variation_pct)>=0?"▲":"▼")+nf.format(Math.abs(S.ndq.variation_pct))+"%";x.fillText(hdr,W-80,86);x.textAlign="left";
       x.fillStyle=C.text;x.font="600 62px 'Chakra Petch', sans-serif";x.fillText("Objectifs en cours",80,170);
       x.fillStyle="rgba(87,211,242,.1)";x.fillRect(80,205,W-160,104);x.fillStyle=C.cyan;x.fillRect(80,205,6,104);
@@ -2375,16 +2388,16 @@ const DEMO_DB=(()=>{
           live?sec("Performance",spark,h("ul",{class:"fp-list"},kv("Capital",nf0.format(Number(b.capital)||0)+" $ (départ "+nf0.format(Number(b.capital_depart)||0)+" $)"),kv("Total",fmtPct(r*100)+" · "+fmtUsd(b.pnl_total)),kv("Aujourd'hui",fmtPct(b.pnl_jour_pct)+" · "+fmtUsd(b.pnl_jour)),kv("Perte max depuis le plus haut",fmtPct(-Math.abs(Number(b.drawdown_max_pct)||0))),kv("Trades · réussite",(Number(b.nb_trades)||0)+" · "+nf.format(Number(b.taux_reussite)||0)+" %"),kv("Position",str(b.position||"aucune")),kv("Dernier trade",b.dernier_trade?[b.dernier_trade.sens,b.dernier_trade.prix,b.dernier_trade.resultat].filter(x=>x!=null&&x!=="").join(" · ")+(b.dernier_trade.date?" · "+rel(b.dernier_trade.date):""):"aucun"),kv("État",b.etat==="actif"?"actif":b.etat==="pause"?"en pause":"coupé par ses limites")),b.maj?h("p",{class:"note",text:"Mis à jour "+rel(b.maj)+" · argent fictif"}):null)
             :sec("En construction",h("p",{style:"margin:0;font-size:14px",text:"Cette tour s'allumera quand le bot tournera sur son compte démo."}),b.prochaine?h("p",{class:"note",text:"Prochaine étape : "+str(b.prochaine)}):null));
       }else if(focus.kind==="desk"){
-        fpKind.textContent="Ton poste · menu du QG";
+        fpKind.textContent="Ton poste · menu du cockpit";
         const unread=S.courrier.filter(c=>!c.lu).length,open=S.taches.filter(t=>t.statut!=="fait").sort(byDue),late=lateTasks().length;
         const go=(lab,k,extra)=>h("li",null,h("button",{class:"fp-op",type:"button",onclick:()=>openFocus(k)},h("span",{class:"sw",style:"background:#57d3f2"}),h("span",{class:"nm",text:lab}),h("span",{class:"pc",text:extra||""})));
         fpBody.replaceChildren(
-          h("h3",{class:"fp-title",text:"Bonsoir Rayan, que veux-tu faire ?".replace("Bonsoir",new Date().getHours()<18&&new Date().getHours()>=5?"Bonjour":"Bonsoir")}),
+          h("h3",{class:"fp-title",text:"Bonsoir, que veux-tu voir ?".replace("Bonsoir",new Date().getHours()<18&&new Date().getHours()>=5?"Bonjour":"Bonsoir")}),
           sec("En un coup d'œil",h("p",{style:"margin:0;font-size:14px"},(unread?unread+" courrier"+(unread>1?"s":"")+" non lu"+(unread>1?"s":"")+" · ":"Aucun courrier non lu · ")+open.length+" action"+(open.length>1?"s":"")+" ouverte"+(open.length>1?"s":"")+(late?" dont "+late+" en retard":"")),open.length?h("p",{class:"note",text:"Prochaine : "+str(open[0].titre)}):null),
           sec("Tout le détail",h("div",{class:"fp-row",style:"flex-wrap:wrap"},
             h("button",{class:"btn",type:"button",text:"Ouvrir la vue Tableau",onclick:()=>{if(S.imm)$("fullBtn").click();setView("tableau");window.scrollTo({top:0,behavior:"smooth"})}}),
             h("button",{class:"btn ghost",type:"button",text:S.imm?"Quitter le plein écran":"Plein écran",onclick:()=>$("fullBtn").click()}))),
-          sec("Aller vers",h("ul",{class:"fp-list"},go("Boîte aux lettres","courrier",unread?unread+" non lu"+(unread>1?"s":""):""),h("li",null,h("button",{class:"fp-op",type:"button",onclick:()=>openFocus("agent","concierge")},h("span",{class:"sw",style:"background:#ff8fb3"}),h("span",{class:"nm",text:"Boîte mail · Le Concierge"}),h("span",{class:"pc",text:S.lots.filter(l=>l.statut==="propose").length?S.lots.filter(l=>l.statut==="propose").length+" à décider":""}))),h("li",null,h("button",{class:"fp-op",type:"button",onclick:()=>openFocus("agent","chercheur")},h("span",{class:"sw",style:"background:#ffc94a"}),h("span",{class:"nm",text:"Pistes de business · le Chercheur d'or"}),h("span",{class:"pc",text:pistesTop().length?pistesTop().length+" à décider":""}))),go("Tableau des objectifs","board"),go("Forêt des projets","forest"),go("Quartier des bots","bots"),go("Labo des agents","atelier"),go("Marchés et veille","side"),go("Parler à Jarvis","core"))),
+          sec("Aller vers",h("ul",{class:"fp-list"},go("Boîte aux lettres","courrier",unread?unread+" non lu"+(unread>1?"s":""):""),h("li",null,h("button",{class:"fp-op",type:"button",onclick:()=>openFocus("agent","concierge")},h("span",{class:"sw",style:"background:#ff8fb3"}),h("span",{class:"nm",text:"Boîte mail · Le Concierge"}),h("span",{class:"pc",text:S.lots.filter(l=>l.statut==="propose").length?S.lots.filter(l=>l.statut==="propose").length+" à décider":""}))),h("li",null,h("button",{class:"fp-op",type:"button",onclick:()=>openFocus("agent","chercheur")},h("span",{class:"sw",style:"background:#ffc94a"}),h("span",{class:"nm",text:"Pistes de business · le Chercheur d'or"}),h("span",{class:"pc",text:pistesTop().length?pistesTop().length+" à décider":""}))),go("Tableau des objectifs","board"),go("Forêt des projets","forest"),go("Quartier des bots","bots"),go("Labo des agents","atelier"),go("Marchés et veille","side"),go("Parler au cockpit","core"))),
           sec("Points de vue",h("ul",{class:"fp-list"},...LAMPS.map((L,i)=>h("li",null,h("button",{class:"fp-op",type:"button",onclick:()=>openFocus("lamp",i)},h("span",{class:"sw",style:"background:#"+L.c.toString(16).padStart(6,"0")}),h("span",{class:"nm",text:L.nm}),h("span",{class:"pc",text:""})))))),
           sec("Pages liées",h("ul",{class:"fp-list"},
             h("li",{class:"fp-nw"},h("a",{href:"https://claude.ai/artifact/QPUXX7NRDzHKdjUUPu2G5Q",target:"_blank",rel:"noopener noreferrer",text:"Tableau de pilotage des projets"})),
@@ -2450,7 +2463,7 @@ const DEMO_DB=(()=>{
     function setNdc(cx,cy){const r=canvas.getBoundingClientRect();ndc.set(((cx-r.left)/r.width)*2-1,-((cy-r.top)/r.height)*2+1);rc.setFromCamera(ndc,camera)}
     function pick(cx,cy){setNdc(cx,cy);const list=pickables();const hits=rc.intersectObjects(list.map(p=>p.o),false);if(!hits.length)return null;return list.find(p=>p.o===hits[0].object)||null}
     function pickFloor(cx,cy){setNdc(cx,cy);const hits=rc.intersectObject(floor,false);return hits.length?hits[0].point:null}
-    function label(p){if(!p)return"";if(p.kind==="board")return"Tableau des objectifs";if(p.kind==="side")return"Marchés et veille · les articles";if(p.kind==="core")return"Parler à Jarvis";if(p.kind==="forest")return"La forêt des projets";if(p.kind==="agent"){const ar=artisans.get(p.id);return ARTISAN_INFO[p.id][0]+" · "+ARTISAN_INFO[p.id][1]+(ar?(ar.mode==="work"?" · au travail":ar.mode==="idle"?" · en attente":" · à activer"):"")}if(p.kind==="atelier")return"L'atelier";if(p.kind==="bots")return"Quartier des bots de trading";if(p.kind==="bot"){const b=S.bots.find(x=>x.id===p.id);return b?"Bot "+str(b.nom)+(b.etat==="a_venir"?" · en construction":" · "+fmtPct(botRet(b)*100)):""}if(p.kind==="desk")return"Ton poste · menu du QG";if(p.kind==="lamp")return"Point de vue · "+LAMPS[p.id].nm;if(p.kind==="courrier"){const n=S.courrier.filter(c=>!c.lu).length;return"Boîte aux lettres · "+(n?n+" non lu"+(n>1?"s":""):"rien de nouveau")}if(p.kind==="sorties")return"Sorties à Paris avec Léa";const pr=S.projets.find(x=>x.id===p.id);return pr?str(pr.nom)+" · "+(pr.statut==="a_lancer"?"à lancer":progress(pr)+" %"):""}
+    function label(p){if(!p)return"";if(p.kind==="board")return"Tableau des objectifs";if(p.kind==="side")return"Marchés et veille · les articles";if(p.kind==="core")return"Parler au cockpit";if(p.kind==="forest")return"La forêt des projets";if(p.kind==="agent"){const ar=artisans.get(p.id);return ARTISAN_INFO[p.id][0]+" · "+ARTISAN_INFO[p.id][1]+(ar?(ar.mode==="work"?" · au travail":ar.mode==="idle"?" · en attente":" · à activer"):"")}if(p.kind==="atelier")return"L'atelier";if(p.kind==="bots")return"Quartier des bots de trading";if(p.kind==="bot"){const b=S.bots.find(x=>x.id===p.id);return b?"Bot "+str(b.nom)+(b.etat==="a_venir"?" · en construction":" · "+fmtPct(botRet(b)*100)):""}if(p.kind==="desk")return"Ton poste · menu du cockpit";if(p.kind==="lamp")return"Point de vue · "+LAMPS[p.id].nm;if(p.kind==="courrier"){const n=S.courrier.filter(c=>!c.lu).length;return"Boîte aux lettres · "+(n?n+" non lu"+(n>1?"s":""):"rien de nouveau")}if(p.kind==="sorties")return"Sorties à Paris avec Léa";const pr=S.projets.find(x=>x.id===p.id);return pr?str(pr.nom)+" · "+(pr.statut==="a_lancer"?"à lancer":progress(pr)+" %"):""}
     const floorMark=new THREE.Mesh(new THREE.RingGeometry(.18,.24,40),additive(0x57d3f2,0,THREE.DoubleSide));floorMark.rotation.x=-Math.PI/2;floorMark.position.y=.01;scene.add(floorMark);let markT=0;
     let hover=null;const ptrs=new Map();
     /* étiquettes 3D : cachées, visibles seulement au survol (ou quand l'élément est ouvert) */
@@ -2503,7 +2516,7 @@ const DEMO_DB=(()=>{
     let energy=.2,spd=.35,amp=new Float32Array(WN),speakEnv=0,lastMode="";
     const stateEl=$("coreState"),stateTxt=$("coreStateTxt");
     function mode(now){if(S.speaking||now<S.fakeTalkUntil)return"speaking";if(S.thinking)return"thinking";if(S.listening)return"listening";if(lateTasks().length||S.projets.some(p=>p.statut==="en_cours"&&p.sante==="bloque"))return"alert";return"idle"}
-    const MODE_TXT={idle:"JARVIS · VEILLE",listening:"JARVIS · À L'ÉCOUTE",thinking:"JARVIS · RÉFLEXION",speaking:"JARVIS · PAROLE",alert:"JARVIS · ALERTE"};
+    const MODE_TXT={idle:"COCKPIT · VEILLE",listening:"COCKPIT · À L'ÉCOUTE",thinking:"COCKPIT · RÉFLEXION",speaking:"COCKPIT · PAROLE",alert:"COCKPIT · ALERTE"};
     api.wordPulse=()=>{speakEnv=1};
     let errShown="",lost=false;
     function reportErr(e){const m=String(e&&e.message||e).slice(0,160);if(m===errShown)return;errShown=m;try{console.error("QG 3D",e)}catch(_){}$("hint").textContent="Petit souci d'affichage 3D ("+m+"). La scène continue.";}
@@ -2595,17 +2608,17 @@ const DEMO_DB=(()=>{
     if(!mcpNs)return{ok:false,msg:"Dans la démo, les agents passent tout seuls toutes les 30 secondes : regarde-les travailler."};
     launching=true;setTimeout(()=>launching=false,90000);
     const ag=S.agents.find(a=>a.artisan==="facteur");const trig=(ag&&ag.trigger_id)||FACTEUR_TRIGGER;
-    try{await mcpNs.callTool(RUN_SERVER,"fire_trigger",{trigger_id:trig,text:"Tournée lancée à la main depuis le QG ("+source+")."});
-      try{await S.db.collection("journal").doc(newId("j")).set({ts:new Date().toISOString(),agent:"Le Facteur",texte:"Tournée lancée à la main depuis le QG."})}catch(e){}
+    try{await mcpNs.callTool(RUN_SERVER,"fire_trigger",{trigger_id:trig,text:"Tournée lancée à la main depuis le cockpit ("+source+")."});
+      try{await S.db.collection("journal").doc(newId("j")).set({ts:new Date().toISOString(),agent:"Le Facteur",texte:"Tournée lancée à la main depuis le cockpit."})}catch(e){}
       return{ok:true,msg:"Tournée lancée : le Facteur passe dans quelques minutes."}}
-    catch(err){launching=false;const c=err&&err.code;const M={not_in_manifest:"Le QG n'a pas encore l'autorisation de lancer les agents : accepte la demande d'accès quand elle s'affiche.",approval_required:"Il faut approuver le lancement dans la fenêtre qui s'affiche.",server_not_connected:"Le connecteur des tâches planifiées n'est pas disponible dans cette vue.",needs_reauth:"Reconnecte ton compte dans les réglages de claude.ai.",tool_error:"La tâche a refusé le lancement : "+str(err&&err.message).slice(0,140)};return{ok:false,msg:M[c]||"Lancement impossible pour l'instant ("+(c||"erreur")+")."}}
+    catch(err){launching=false;const c=err&&err.code;const M={not_in_manifest:"Le cockpit n'a pas encore l'autorisation de lancer les agents : accepte la demande d'accès quand elle s'affiche.",approval_required:"Il faut approuver le lancement dans la fenêtre qui s'affiche.",server_not_connected:"Le connecteur des tâches planifiées n'est pas disponible dans cette vue.",needs_reauth:"Reconnecte ton compte dans les réglages de claude.ai.",tool_error:"La tâche a refusé le lancement : "+str(err&&err.message).slice(0,140)};return{ok:false,msg:M[c]||"Lancement impossible pour l'instant ("+(c||"erreur")+")."}}
   }
   window.__launchFacteur=launchFacteur;
   /* ---- démo : visite guidée et plan d'accès (à la place de la conversation) ---- */
   (function(){
     const STEPS=[
-      {t:"L'entrée du QG",sub:"Vue d'ensemble",focus:["home"],
-        intro:"Tu entres dans mon QG : un bureau où six agents IA travaillent pour moi, jour et nuit, pendant que Jarvis fait le lien. Les flèches lumineuses au sol te mènent de station en station.",
+      {t:"L'entrée du cockpit",sub:"Vue d'ensemble",focus:["home"],
+        intro:"Tu entres dans mon cockpit : un bureau où six agents IA travaillent pour moi, jour et nuit, pendant que le cœur du cockpit fait le lien. Les flèches lumineuses au sol te mènent de station en station.",
         dl:[["Ce que tu vois","Chaque agent a son poste. Quand il travaille, il s'anime et une bulle annonce ce qu'il vient de faire."],["Pourquoi un bureau","Une IA qu'on ne voit pas, on l'oublie. Ici, tout ce qui tourne est visible."]]},
       {t:"Le Concierge et le Facteur",sub:"Station 1 · mails et courrier",focus:["agent","concierge"],
         dl:[["Ce qu'ils font","Le Concierge trie la boîte mail chaque soir et propose des lots à archiver, supprimer ou relancer. Le Facteur fait le lien avec Claude : il exécute les demandes et répond dans la boîte aux lettres."],["Pour qui","Tout le monde : une boîte qui déborde, c'est universel."],["À regarder","Le tas de lettres sur le bureau et la boîte aux lettres qui clignote quand un courrier arrive."]]},
@@ -2621,8 +2634,8 @@ const DEMO_DB=(()=>{
         dl:[["Ce qu'elle fait","Chaque matin, elle lit l'actualité qui touche tes projets et t'envoie une brève avec les titres cliquables. Tu peux lui donner un sujet précis à suivre jour après jour."],["Pour qui","Ceux qui suivent un sujet de près sans vouloir relire toute la presse."]]},
       {t:"Le Chasseur d'offres",sub:"Station 7 · recherche d'emploi",focus:["agent","recruteur"],
         dl:[["Ce qu'il fait","Chaque nuit, il lit les nouvelles offres, les note sur 10 et te dit quoi mettre en avant dans ton CV pour chacune."],["Pour qui","Les cadres en transition et les indépendants qui cherchent une mission."]]},
-      {t:"Jarvis",sub:"Station 8 · le chef d'orchestre",focus:["core"],
-        dl:[["Ce qu'il fait","Il lit le travail de tous les agents et te fait un briefing chaque fois que tu entres. Dans la vraie version, tu lui parles et il agit sur le QG."],["Dans cette démo","Il fait le briefing, mais ne répond pas en direct."]]},
+      {t:"Le cœur du cockpit",sub:"Station 8 · le chef d'orchestre",focus:["core"],
+        dl:[["Ce qu'il fait","Il lit le travail de tous les agents et te fait un briefing chaque fois que tu entres. Dans la vraie version, tu lui parles et il agit sur le cockpit."],["Dans cette démo","Il fait le briefing, mais ne répond pas en direct."]]},
       {t:"Et toi, ton premier agent ?",sub:"Fin de la visite",focus:["home"],end:true}
     ];
     const MAP={x0:-13.5,x1:11.5,z0:-5.6,z1:16.4};
@@ -2635,7 +2648,7 @@ const DEMO_DB=(()=>{
     const chat=$("chat");chat.parentNode.insertBefore(sec,chat);chat.hidden=true;
     const fab=document.querySelector(".fab");if(fab)fab.hidden=true;
     function svg(){const ns="http://www.w3.org/2000/svg";const sv=(t,a,txt)=>{const e=document.createElementNS(ns,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;return e};
-      const s=sv("svg",{viewBox:`0 0 ${W+20} ${H+34}`,role:"img","aria-label":"Plan du QG vu du dessus",class:"plan-map"});
+      const s=sv("svg",{viewBox:`0 0 ${W+20} ${H+34}`,role:"img","aria-label":"Plan du cockpit vu du dessus",class:"plan-map"});
       s.append(sv("rect",{x:10,y:10,width:W,height:H,rx:8,fill:"rgba(87,211,242,.04)",stroke:"#27394a","stroke-width":1.5}));
       const zone=(x,z,w,d,lab)=>{s.append(sv("rect",{x:mx(x),y:mz(z),width:w/(MAP.x1-MAP.x0)*W,height:d/(MAP.z1-MAP.z0)*H,rx:5,fill:"rgba(87,211,242,.06)",stroke:"#1d3442"}));s.append(sv("text",{x:mx(x)+4,y:mz(z)+12,"font-size":9,fill:"#8095a5","font-family":"JetBrains Mono, monospace"},lab))};
       zone(-13.2,-1.6,9.6,11.6,"ATELIER");zone(3.4,-1.0,5.7,9.1,"FORÊT");zone(3.0,10.0,8.2,5.4,"BOTS");zone(-2.6,8.0,5.4,4.6,"ACCUEIL");
@@ -2651,18 +2664,32 @@ const DEMO_DB=(()=>{
         const go=()=>goto(i);g.addEventListener("click",go);g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}});s.append(g)});
       return s}
     function render(){const i=Math.max(step,0),s=STEPS[i];sec.replaceChildren();
-      sec.append(h("div",{class:"ph"},h("h2",{id:"h-plan",text:"Plan d'accès"}),h("span",{class:"code",text:"VISITE · "+(i+1)+"/"+STEPS.length})),svg(),
-        h("ul",{class:"plan-how"},h("li",null,h("b",{text:"Suis les flèches au sol"})," de l'entrée jusqu'à Jarvis."),h("li",null,h("b",{text:"Touche un numéro"})," sur le plan pour t'y rendre."),h("li",null,h("b",{text:"Touche un agent"})," dans le bureau pour ouvrir sa fiche.")));
+      sec.append(h("div",{class:"ph"},h("h2",{id:"h-plan",text:"Plan d'accès"}),h("span",{class:"code",text:"VISITE · "+(i+1)+"/"+STEPS.length})));
+      if(step<0)sec.append(h("button",{class:"tour-go",type:"button",onclick:()=>goto(1)},h("span",{class:"tg-play","aria-hidden":"true"}),h("span",null,h("b",{text:"Commencer la visite guidée"}),h("small",{text:"8 stations · 3 minutes"}))));
+      sec.append(svg(),
+        h("ul",{class:"plan-how"},h("li",null,h("b",{text:"Suis les flèches au sol"})," de l'entrée jusqu'au cœur du cockpit."),h("li",null,h("b",{text:"Touche un numéro"})," sur le plan pour t'y rendre."),h("li",null,h("b",{text:"Touche un agent"})," dans le bureau pour ouvrir sa fiche.")));
       const card=h("div",{class:"plan-step"});
       card.append(h("div",{class:"plan-h"},h("span",{class:"plan-num",text:s.end?"✓":String(i)}),h("div",null,h("span",{class:"label",text:s.sub}),h("h3",{text:s.t}))));
       if(s.intro)card.append(h("p",{class:"plan-p",text:s.intro}));
       if(s.dl)card.append(h("dl",{class:"plan-dl"},...s.dl.map(([a,b])=>h("div",null,h("dt",{text:a}),h("dd",{text:b})))));
-      if(s.end)card.append(h("p",{class:"plan-p",text:"Tu viens de voir six agents qui travaillent seuls, chaque jour, et Jarvis qui relie leur travail. Construire le premier agent prend une soirée."}),
+      if(s.end)card.append(h("p",{class:"plan-p",text:"Tu viens de voir six agents qui travaillent seuls, chaque jour, et le cockpit qui relie leur travail. Construire le premier agent prend une soirée."}),
         h("div",{class:"plan-cta"},h("b",{text:"Le guide gratuit : ton premier agent IA en une soirée"}),h("span",{text:"Commente ce mot sous mon post LinkedIn, je t'envoie le guide en message privé."}),h("code",{text:"COCKPIT"})));
       const prog=h("div",{class:"plan-prog"},...STEPS.map((_,k)=>h("span",{class:k<=i?"on":null})));
       card.append(h("div",{class:"plan-nav"},h("button",{class:"btn ghost",type:"button",disabled:i===0||step<0,onclick:()=>goto(i-1)},"Précédent"),prog,
         i<STEPS.length-1?h("button",{class:"btn",type:"button",onclick:()=>goto(step<0?0:i+1)},step<0?"Commencer la visite":"Suivant"):h("button",{class:"btn ghost",type:"button",onclick:()=>goto(0)},"Recommencer")));
-      sec.append(card)}
+      sec.append(card);syncBar()}
+    const stageEl=document.querySelector(".stage");const bar=h("div",{class:"tourbar",role:"group","aria-label":"Visite guidée"});if(stageEl)stageEl.appendChild(bar);
+    function syncBar(){bar.replaceChildren();
+      if(step<1){bar.append(h("button",{class:"tour-go small",type:"button",onclick:()=>goto(1)},h("span",{class:"tg-play","aria-hidden":"true"}),h("b",{text:"Commencer la visite"})));return}
+      const s=STEPS[step],last=step===STEPS.length-1;
+      bar.append(h("button",{class:"tb-arrow",type:"button","aria-label":"Station précédente",onclick:()=>goto(step-1)},"‹"),
+        h("span",{class:"tb-txt"},h("small",{text:last?"FIN DE LA VISITE":"STATION "+step+" / 8"}),h("b",{text:s.t})),
+        last?h("button",{class:"tb-arrow",type:"button","aria-label":"Recommencer la visite",onclick:()=>goto(1)},"↺"):h("button",{class:"tb-arrow",type:"button","aria-label":"Station suivante",onclick:()=>goto(step+1)},"›"))}
+    function widgets(){try{const ag=(S.agents||[]).filter(a=>a.artisan&&a.etat==="actif"),w=ag.filter(a=>a.travail).length;
+        $("wAgents").textContent=String(ag.length);$("wAgentsSub").textContent=w?(w+" au travail en ce moment"):"Tous en veille, prochain passage bientôt";
+        const c=S.courrier||[],u=c.filter(x=>!x.lu).length;$("wMail").textContent=String(u);$("wMailSub").textContent=(u>1?"non lus":"non lu")+" sur "+c.length+" messages";
+        const t=S.tstate;if(t&&t.capital){const p=(t.capital/(t.capital_depart||100000)-1)*100;$("wBots").textContent=Math.round(t.capital).toLocaleString("fr-FR")+" €";$("wBotsSub").textContent=(p>=0?"+":"−")+Math.abs(p).toLocaleString("fr-FR",{maximumFractionDigits:2})+" % depuis le départ · argent fictif"}}catch(e){}}
+    setInterval(widgets,2000);setTimeout(widgets,800);
     function goto(i){step=Math.max(0,Math.min(STEPS.length-1,i));const s=STEPS[step];render();
       try{const vb=document.querySelector(".views button");if(vb&&vb.getAttribute("aria-pressed")!=="true")vb.click()}catch(e){}
       try{scene3d.route&&scene3d.route.set(MK[step]?step:0)}catch(e){}
@@ -2688,7 +2715,7 @@ const DEMO_DB=(()=>{
     db.collection("taches").orderBy("ordre").onSnapshot(s=>{S.taches=rows(s);S.loaded.add("taches");mark(s);renderTasks();renderBrief();renderOps();scene3d.redraw()},onErr);
     db.collection("agents").orderBy("ordre").onSnapshot(s=>{S.agents=rows(s);S.loaded.add("agents");mark(s);renderAgents();scene3d.redraw()},onErr);
     db.collection("actus").orderBy("date","desc").limit(80).onSnapshot(s=>{const n=fresh(s,"actus");S.actus=rows(s);S.loaded.add("actus");mark(s);renderNews();scene3d.redraw();if(n.length)scene3d.notify("Nouvelle actualité : "+str(n[0].titre))},onErr);
-    db.collection("journal").orderBy("ts","desc").limit(200).onSnapshot(s=>{const n=fresh(s,"journal").filter(j=>!str(j.agent).startsWith("Jarvis · conversation"));S.journal=rows(s);S.loaded.add("journal");mark(s);renderLog();if(n.length)scene3d.notify(str(n[0].agent)+" : "+str(n[0].texte))},onErr);
+    db.collection("journal").orderBy("ts","desc").limit(200).onSnapshot(s=>{const n=fresh(s,"journal").filter(j=>!str(j.agent).startsWith("Cockpit · conversation"));S.journal=rows(s);S.loaded.add("journal");mark(s);renderLog();if(n.length)scene3d.notify(str(n[0].agent)+" : "+str(n[0].texte))},onErr);
     db.collection("depot").orderBy("ts","desc").limit(40).onSnapshot(s=>{S.depot=rows(s);S.loaded.add("depot");mark(s);renderDepot()},onErr);
     db.doc("qg/etat").onSnapshot(d=>{S.etat=d.exists?d.data():null;S.loaded.add("etat");mark(d);renderBrief();scene3d.redraw()},onErr);
     db.collection("courrier").orderBy("ts","desc").limit(80).onSnapshot(s=>{const n=fresh(s,"courrier");S.courrier=rows(s);S.loaded.add("courrier");mark(s);renderCourrier();scene3d.redraw();if(n.length)scene3d.notify("Nouveau courrier de "+mailAg(n[0])[0]+" : "+str(n[0].demande))},onErr);
@@ -2734,7 +2761,7 @@ const DEMO_DB=(()=>{
       $("sayTxt").textContent=briefText;$("briefTitle").textContent="Briefing · "+fHM.format(new Date());$("briefText").textContent=briefText;$("briefCard").hidden=false;
       briefMsg=briefText;renderChat();
       S.fakeTalkUntil=performance.now()+Math.min(16000,2500+briefText.length*48);
-      if(voiceOn){say(briefText);setTimeout(()=>{if(!spokeOnce&&!(synth&&synth.speaking)){pendingVoice=true;$("briefTap").textContent="Touche l'écran pour entendre Jarvis"}},900)}
+      if(voiceOn){say(briefText);setTimeout(()=>{if(!spokeOnce&&!(synth&&synth.speaking)){pendingVoice=true;$("briefTap").textContent="Touche l'écran pour écouter le briefing"}},900)}
       else $("briefTap").textContent="Active la voix pour l'entendre";
       setTimeout(()=>{$("briefCard").hidden=true},30000)};
     if(ready())go();else{const iv=setInterval(()=>{if(ready()){clearInterval(iv);go()}},250);setTimeout(()=>{clearInterval(iv);go()},5000)}
@@ -2750,20 +2777,20 @@ const DEMO_DB=(()=>{
   let sample=null,hasTools=false,ctl=null,briefMsg="";
   function renderChat(){
     const items=[];if(briefMsg)items.push(h("li",{class:"m j brief-m",text:briefMsg}));
-    if(!S.turns.length&&!briefMsg)items.push(h("li",{class:"intro",text:"Je suis Jarvis. Je connais tes projets, tes actions, la météo et les marchés. Demande-moi par où commencer, ou dis-moi d'ajouter une action, de valider une étape ou de noter une idée."}));
+    if(!S.turns.length&&!briefMsg)items.push(h("li",{class:"intro",text:"Je suis le cockpit. Je connais tes projets, tes actions, la météo et les marchés. Demande-moi par où commencer, ou dis-moi d'ajouter une action, de valider une étape ou de noter une idée."}));
     S.turns.forEach(t=>items.push(h("li",{class:"m "+(t.role==="user"?"u":t.role==="action"?"act":"j"),text:t.role==="action"?"✓ "+t.content:t.content})));
     msgs.replaceChildren(...items);msgs.scrollTop=msgs.scrollHeight;
   }
   renderChat();
   (async()=>{sample=await use("sample");
-    if(!sample){form.querySelectorAll("input,button").forEach(b=>b.disabled=true);note.textContent="Dans cette version de démonstration, Jarvis ne répond pas en direct. Dans la vraie version, tu lui parles ici.";return}
+    if(!sample){form.querySelectorAll("input,button").forEach(b=>b.disabled=true);note.textContent="Dans cette version de démonstration, Cockpit ne répond pas en direct. Dans la vraie version, tu lui parles ici.";return}
     try{const l=await sample.limits();hasTools=!!(l&&l.tools)}catch(e){hasTools=false}})();
   q.addEventListener("focus",()=>{S.listening=true});q.addEventListener("blur",()=>{S.listening=false});
   $("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;q.value=b.textContent==="Note une idée"?"Note une idée : ":b.textContent;q.focus();if(b.textContent!=="Note une idée")form.requestSubmit()});
   stopBtn.onclick=()=>ctl&&ctl.abort();
   $("clearBtn").onclick=async()=>{if(S.busy)return;S.turns=[];briefMsg="";renderChat();if(S.db&&S.canWrite){try{await S.db.doc("chat/fil").set({turns:[],maj:new Date().toISOString()})}catch(e){}}};
-  async function journal(texte){try{await S.db.collection("journal").doc(newId("j")).set({ts:new Date().toISOString(),agent:"Jarvis · conversation",texte})}catch(e){}}
-  function needWrite(){if(!S.db||!S.canWrite)throw new Error("Écriture impossible dans cette vue du QG.")}
+  async function journal(texte){try{await S.db.collection("journal").doc(newId("j")).set({ts:new Date().toISOString(),agent:"Cockpit · conversation",texte})}catch(e){}}
+  function needWrite(){if(!S.db||!S.canWrite)throw new Error("Écriture impossible dans cette vue du cockpit.")}
   const projIds=()=>S.projets.map(p=>p.id);
   const actions=[];
   const TOOLS=[
@@ -2773,10 +2800,10 @@ const DEMO_DB=(()=>{
      async execute(i){needWrite();const k=str(i.action).toLowerCase();const t=S.taches.find(t=>t.id===i.action)||S.taches.find(t=>str(t.titre).toLowerCase().includes(k));if(!t)throw new Error("Action introuvable");await S.db.doc("taches/"+t.id).update({statut:"fait"});actions.push("Action terminée : "+t.titre);journal("Action terminée : "+t.titre);return{ok:true,titre:t.titre}}},
     {name:"valider_etape",description:"Valide (ou rouvre) une étape de la feuille de route d'un projet, à partir d'un extrait de son intitulé.",inputSchema:{type:"object",properties:{projet:{type:"string"},etape:{type:"string"},fait:{type:"boolean"}},required:["projet","etape"]},
      async execute(i){needWrite();const p=S.projets.find(p=>p.id===i.projet);if(!p)throw new Error("Projet introuvable");const st=steps(p).map(e=>({t:e.t,f:!!e.f}));const k=str(i.etape).toLowerCase();const e=st.find(e=>e.t.toLowerCase().includes(k));if(!e)throw new Error("Étape introuvable");e.f=i.fait!==false;const done=st.filter(x=>x.f).length;await S.db.doc("projets/"+p.id).update({etapes:st,avancement:Math.round(done/st.length*100)});actions.push((e.f?"Étape validée : ":"Étape rouverte : ")+e.t);journal("Étape "+(e.f?"validée":"rouverte")+" ("+p.nom+") : "+e.t);scene3d.beam(p.id);return{ok:true}}},
-    {name:"noter",description:"Dépose une idée ou une demande pour Claude dans la boîte de dépôt du QG. type='idee' pour une nouvelle idée de projet, 'demande' pour un travail que Claude devra faire (recherche, document, code, agent).",inputSchema:{type:"object",properties:{type:{type:"string",enum:["idee","demande"]},texte:{type:"string"},projet:{type:"string"}},required:["type","texte"]},
+    {name:"noter",description:"Dépose une idée ou une demande pour Claude dans la boîte de dépôt du cockpit. type='idee' pour une nouvelle idée de projet, 'demande' pour un travail que Claude devra faire (recherche, document, code, agent).",inputSchema:{type:"object",properties:{type:{type:"string",enum:["idee","demande"]},texte:{type:"string"},projet:{type:"string"}},required:["type","texte"]},
      async execute(i){needWrite();const texte=str(i.texte).trim().slice(0,600);if(!texte)throw new Error("Texte vide");const type=i.type==="demande"?"demande":"idee";const projet=projIds().includes(str(i.projet))?str(i.projet):null;await S.db.collection("depot").doc(newId("d")).set({type,texte,projet,ts:new Date().toISOString(),statut:"nouveau"});const lab=type==="demande"?"Demande notée pour Claude : ":"Idée notée : ";actions.push(lab+texte);journal(lab+texte);return{ok:true}}},
     {name:"lancer_facteur",description:"Lance tout de suite une tournée du Facteur, l'agent qui traite les demandes de la boîte de dépôt (recherches sur internet, réponses dans le courrier). À utiliser quand Rayan demande d'envoyer ou d'activer le Facteur maintenant.",inputSchema:{type:"object",properties:{}},
-     async execute(){const r=await launchFacteur("Jarvis");if(!r.ok)throw new Error(r.msg);actions.push("Facteur lancé");return{ok:true,message:r.msg}}},
+     async execute(){const r=await launchFacteur("Cockpit");if(!r.ok)throw new Error(r.msg);actions.push("Facteur lancé");return{ok:true,message:r.msg}}},
     {name:"changer_directive",description:"Remplace la directive de la semaine.",inputSchema:{type:"object",properties:{texte:{type:"string"}},required:["texte"]},
      async execute(i){needWrite();const texte=str(i.texte).trim().slice(0,240);if(!texte)throw new Error("Texte vide");await S.db.doc("qg/etat").set({focus:texte,maj:new Date().toISOString()});actions.push("Directive mise à jour");journal("Nouvelle directive : "+texte);return{ok:true}}},
     {name:"maj_projet",description:"Met à jour un projet existant : statut (en_cours, a_lancer, attente, loisir), priorite (absolue = passe en tête et en cours ; monter ; descendre), sante (ok, attention, bloque) ou prochaine action clé.",inputSchema:{type:"object",properties:{projet:{type:"string",description:"Identifiant du projet"},statut:{type:"string",enum:["en_cours","a_lancer","attente","loisir"]},priorite:{type:"string",enum:["absolue","monter","descendre"]},sante:{type:"string",enum:["ok","attention","bloque"]},prochaine:{type:"string"}},required:["projet"]},
@@ -2794,25 +2821,25 @@ const DEMO_DB=(()=>{
        let acts=arr(p.actifs).slice();arr(i.ajouter_actifs).forEach(a=>{a=str(a).trim().toUpperCase().slice(0,20);if(a&&!acts.includes(a))acts.push(a)});const rm=arr(i.retirer_actifs).map(a=>str(a).trim().toUpperCase());if(rm.length||arr(i.ajouter_actifs).length){acts=acts.filter(a=>!rm.includes(a));nx.actifs=acts;done.push("actifs : "+acts.join(", "))}
        if(arr(i.unites).length){nx.unites=UNITES.filter(u=>i.unites.includes(u));done.push("unités : "+nx.unites.join(", "))}
        let strs=arr(p.strategies).map(x=>Object.assign({},x));const findS=n=>strs.find(x=>str(x.nom).toLowerCase().includes(str(n).toLowerCase()));
-       if(i.ajouter_strategie&&str(i.ajouter_strategie.nom).trim()){const s=i.ajouter_strategie;strs.push({id:newId("s"),nom:str(s.nom).trim().slice(0,60),idee:str(s.idee).slice(0,600),actif:str(s.actif).toUpperCase(),unite:str(s.unite),active:true,auteur:"Rayan"});nx.strategies=strs;done.push("stratégie ajoutée : "+s.nom)}
+       if(i.ajouter_strategie&&str(i.ajouter_strategie.nom).trim()){const s=i.ajouter_strategie;strs.push({id:newId("s"),nom:str(s.nom).trim().slice(0,60),idee:str(s.idee).slice(0,600),actif:str(s.actif).toUpperCase(),unite:str(s.unite),active:true,auteur:"Démo"});nx.strategies=strs;done.push("stratégie ajoutée : "+s.nom)}
        if(i.pause_strategie){const s=findS(i.pause_strategie);if(!s)throw new Error("Stratégie introuvable");s.active=false;nx.strategies=strs;done.push("pause : "+s.nom)}
        if(i.reprendre_strategie){const s=findS(i.reprendre_strategie);if(!s)throw new Error("Stratégie introuvable");s.active=true;nx.strategies=strs;done.push("reprise : "+s.nom)}
        if(i.consignes){nx.consignes=str(i.consignes).slice(0,1500);done.push("consignes mises à jour")}
        if(Number(i.perte_max_bot_pct)>0){nx.perte_max_bot_pct=Number(i.perte_max_bot_pct);done.push("perte max par bot "+nx.perte_max_bot_pct+" %")}
        if(Number(i.perte_max_jour_pct)>0){nx.perte_max_jour_pct=Number(i.perte_max_jour_pct);done.push("perte max par jour "+nx.perte_max_jour_pct+" %")}
        if(!done.length)throw new Error("Rien à modifier");
-       await saveParams(nx,"Jarvis");actions.push("Paramètres des bots : "+done.join(", "));return{ok:true}}},
+       await saveParams(nx,"Cockpit");actions.push("Paramètres des bots : "+done.join(", "));return{ok:true}}},
     {name:"decider_piste",description:"Garde ou écarte des pistes de business IA trouvées par le Chercheur d'or. pistes = identifiants (voir pistes.a_decider) ou extraits de titre, ou ['top3'] pour tout le top 3 en attente. garder = la piste devient un projet « en attente » dans la forêt ; ecarter = elle est classée sans suite.",inputSchema:{type:"object",properties:{pistes:{type:"array",items:{type:"string"}},decision:{type:"string",enum:["garder","ecarter"]}},required:["pistes","decision"]},
-     async execute(i){needWrite();const ks=arr(i.pistes).map(x=>str(x).toLowerCase());const open=S.pistes.filter(x=>x.statut==="top3"||x.statut==="nouvelle");const pick=ks.includes("top3")?pistesTop():open.filter(x=>ks.some(k=>x.id.toLowerCase()===k||str(x.titre).toLowerCase().includes(k)));if(!pick.length)throw new Error("Aucune piste correspondante à décider");const st=i.decision==="ecarter"?"ecartee":"gardee";for(const x of pick)await decidePiste(x,st,"Jarvis");const t=(st==="gardee"?"Pistes gardées : ":"Pistes écartées : ")+pick.map(x=>str(x.titre)).join(" ; ");actions.push(t);return{ok:true,nb:pick.length}}},
+     async execute(i){needWrite();const ks=arr(i.pistes).map(x=>str(x).toLowerCase());const open=S.pistes.filter(x=>x.statut==="top3"||x.statut==="nouvelle");const pick=ks.includes("top3")?pistesTop():open.filter(x=>ks.some(k=>x.id.toLowerCase()===k||str(x.titre).toLowerCase().includes(k)));if(!pick.length)throw new Error("Aucune piste correspondante à décider");const st=i.decision==="ecarter"?"ecartee":"gardee";for(const x of pick)await decidePiste(x,st,"Cockpit");const t=(st==="gardee"?"Pistes gardées : ":"Pistes écartées : ")+pick.map(x=>str(x.titre)).join(" ; ");actions.push(t);return{ok:true,nb:pick.length}}},
     {name:"filtrer_veille",description:"Cible la prochaine veille du Journaliste (passage chaque matin à 7 h 50, brève dans le courrier vers 8 h) sur des sujets précis, par exemple IA, or, Bitcoin, Nasdaq, hôtellerie. sujets vide = veille normale sur les projets de Rayan. duree 'prochain' (par défaut) = seulement le prochain passage ; 'permanent' = jusqu'à nouvel ordre.",inputSchema:{type:"object",properties:{sujets:{type:"array",items:{type:"string"}},duree:{type:"string",enum:["prochain","permanent"]}},required:["sujets"]},
-     async execute(i){needWrite();const t=arr(i.sujets).map(x=>str(x).trim()).filter(Boolean).slice(0,8);await saveVF({themes:t,mode:i.duree==="permanent"?"permanent":"prochain"},"Jarvis");const lab=t.length?"Veille ciblée : "+t.join(", ")+(i.duree==="permanent"?" (jusqu'à nouvel ordre)":" (prochain passage)"):"Veille normale rétablie";actions.push(lab);return{ok:true}}},
-    {name:"creer_projet",description:"Crée un nouveau projet dans le QG (il apparaît dans la forêt des projets, et sur le tableau des objectifs s'il est en cours).",inputSchema:{type:"object",properties:{nom:{type:"string"},statut:{type:"string",enum:["en_cours","a_lancer","attente","loisir"]},priorite_absolue:{type:"boolean"}},required:["nom"]},
+     async execute(i){needWrite();const t=arr(i.sujets).map(x=>str(x).trim()).filter(Boolean).slice(0,8);await saveVF({themes:t,mode:i.duree==="permanent"?"permanent":"prochain"},"Cockpit");const lab=t.length?"Veille ciblée : "+t.join(", ")+(i.duree==="permanent"?" (jusqu'à nouvel ordre)":" (prochain passage)"):"Veille normale rétablie";actions.push(lab);return{ok:true}}},
+    {name:"creer_projet",description:"Crée un nouveau projet dans le cockpit (il apparaît dans la forêt des projets, et sur le tableau des objectifs s'il est en cours).",inputSchema:{type:"object",properties:{nom:{type:"string"},statut:{type:"string",enum:["en_cours","a_lancer","attente","loisir"]},priorite_absolue:{type:"boolean"}},required:["nom"]},
      async execute(i){needWrite();const id=await creerProjet(i.nom,i.statut||"attente",!!i.priorite_absolue);actions.push("Projet créé : "+str(i.nom).trim());return{ok:true,id}}},
     {name:"decider_mails",description:"Valide ou laisse de côté les lots de mails proposés par le Concierge (archiver, corbeille, relance). lots = liste d'identifiants (voir boite_mail.a_decider) ou ['tout'] pour tous les lots de tri (archiver, corbeille, classer). Le Concierge exécute les lots validés pendant la nuit ; une relance devient un brouillon Gmail que Rayan envoie lui-même.",inputSchema:{type:"object",properties:{lots:{type:"array",items:{type:"string"}},decision:{type:"string",enum:["valider","laisser"]}},required:["lots","decision"]},
      async execute(i){needWrite();const ids=Array.isArray(i.lots)?i.lots.map(str):[];const todo=aDecider();const pick=ids.includes("tout")?todo.filter(l=>l.action!=="relancer"):todo.filter(l=>ids.includes(l.id));if(!pick.length)throw new Error("Aucun lot correspondant à décider");const st=i.decision==="laisser"?"refuse":"valide";for(const l of pick)await decideLot(l,st);const t=(st==="valide"?"Lots validés : ":"Lots laissés : ")+pick.map(l=>str(l.titre)).join(" ; ");actions.push(t);journal(t);return{ok:true,nb:pick.length}}}
   ];
-  function rules(){return "Tu es Jarvis, l'assistant de cette démo."}
-  const ERR={not_granted:"Jarvis n'a pas l'autorisation d'utiliser Claude dans cette vue.",sampling_disabled:"Claude n'est pas disponible pour ce compte.",rate_limited:"Trop de messages d'un coup. Réessaie dans un moment.",session_expired:"Ta session a expiré : reconnecte-toi à claude.ai.",refused:"Jarvis ne peut pas répondre à ça. Reformule.",prompt_too_large:"La conversation est trop longue : clique sur Effacer.",tools_unavailable:"Les actions sur le QG ne sont pas disponibles dans cette vue."};
+  function rules(){return "Tu es Cockpit, l'assistant de cette démo."}
+  const ERR={not_granted:"Cockpit n'a pas l'autorisation d'utiliser Claude dans cette vue.",sampling_disabled:"Claude n'est pas disponible pour ce compte.",rate_limited:"Trop de messages d'un coup. Réessaie dans un moment.",session_expired:"Ta session a expiré : reconnecte-toi à claude.ai.",refused:"Cockpit ne peut pas répondre à ça. Reformule.",prompt_too_large:"La conversation est trop longue : clique sur Effacer.",tools_unavailable:"Les actions sur le cockpit ne sont pas disponibles dans cette vue."};
   async function saveTurns(){if(!S.db||!S.canWrite)return;try{await S.db.doc("chat/fil").set({turns:S.turns.slice(-40),maj:new Date().toISOString()})}catch(e){}}
   function beamFromText(text){const tl=str(text).toLowerCase();for(const p of actifs()){const words=str(p.nom).toLowerCase().replace(/[«»"·()]/g," ").split(/\s+/).filter(w=>w.length>4&&!["projet","outil","environnement","travail"].includes(w));if(words.some(w=>tl.includes(w))){scene3d.beam(p.id);return}}}
   form.addEventListener("submit",async e=>{
@@ -2835,11 +2862,11 @@ const DEMO_DB=(()=>{
       if(answer.trim())S.turns.push({role:"assistant",content:answer.trim(),ts:new Date().toISOString()});
       const errs=[...msgs.querySelectorAll(".m.err")];renderChat();errs.forEach(x=>msgs.append(x));
       await saveTurns();S.busy=false;askBtn.disabled=false;stopBtn.hidden=true;ctl=null;
-      if(answer.trim()){scene3d.say(answer);beamFromText(answer);if(S.imm)$("immCap").textContent="Jarvis a répondu. Touche le micro pour continuer.";if(!say(answer,S.imm))S.fakeTalkUntil=performance.now()+Math.min(9000,1500+answer.length*35)}
+      if(answer.trim()){scene3d.say(answer);beamFromText(answer);if(S.imm)$("immCap").textContent="Cockpit a répondu. Touche le micro pour continuer.";if(!say(answer,S.imm))S.fakeTalkUntil=performance.now()+Math.min(9000,1500+answer.length*35)}
     }
   });
 
-  /* ---------- plein écran : le bureau seul, avec un micro pour parler à Jarvis ---------- */
+  /* ---------- plein écran : le bureau seul, avec un micro pour parler au cockpit ---------- */
   S.imm=false;
   const stageEl=$("stage"),immCap=$("immCap"),micBtn=$("micBtn"),immForm=$("immForm"),immQ=$("immQ");
   function setImmersive(on){
@@ -2854,7 +2881,7 @@ const DEMO_DB=(()=>{
   window.addEventListener("resize",()=>{if(S.imm&&scene3d.resize)scene3d.resize()});
   document.addEventListener("fullscreenchange",()=>{if(!document.fullscreenElement&&S.imm&&window.innerWidth>1100)setImmersive(false)});
   window.addEventListener("keydown",e=>{if(e.key!=="Escape")return;const fp=document.getElementById("fpanel");if(fp&&!fp.hidden){document.getElementById("fpBack").click();return}if(S.imm&&!document.fullscreenElement)setImmersive(false)});
-  function ask(text){text=str(text).trim();if(!text)return;if(!sample){immCap.textContent="Jarvis ne répond que si le QG est ouvert depuis claude.ai.";return}if(S.busy){immCap.textContent="Jarvis termine sa réponse, réessaie dans un instant.";return}q.value=text;immCap.textContent="« "+(text.length>90?text.slice(0,88)+"…":text)+" »";form.requestSubmit()}
+  function ask(text){text=str(text).trim();if(!text)return;if(!sample){immCap.textContent="Cockpit ne répond que si le cockpit est ouvert depuis claude.ai.";return}if(S.busy){immCap.textContent="Cockpit termine sa réponse, réessaie dans un instant.";return}q.value=text;immCap.textContent="« "+(text.length>90?text.slice(0,88)+"…":text)+" »";form.requestSubmit()}
   immForm.addEventListener("submit",e=>{e.preventDefault();const v=immQ.value;immQ.value="";ask(v)});
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,heard="";
   function fallbackTyping(msg){immForm.hidden=false;immCap.textContent=msg;setTimeout(()=>immQ.focus(),50)}
@@ -2867,13 +2894,13 @@ const DEMO_DB=(()=>{
     rec.lang="fr-FR";rec.interimResults=true;rec.continuous=false;rec.maxAlternatives=1;heard="";
     rec.onstart=()=>{S.listening=true;micBtn.setAttribute("aria-pressed","true");immCap.textContent="Je t'écoute…"};
     rec.onresult=ev=>{let txt="";for(let i=0;i<ev.results.length;i++)txt+=ev.results[i][0].transcript;heard=txt;immCap.textContent=txt||"Je t'écoute…"};
-    rec.onerror=ev=>{const c=ev&&ev.error;stopMic();if(c==="not-allowed"||c==="service-not-allowed"||c==="audio-capture")fallbackTyping("Le micro du navigateur est bloqué dans le QG : touche le champ, puis le micro de ton clavier pour dicter.");else if(c==="no-speech")immCap.textContent="Je n'ai rien entendu. Touche le micro et parle.";else immCap.textContent="Écoute interrompue. Réessaie."};
+    rec.onerror=ev=>{const c=ev&&ev.error;stopMic();if(c==="not-allowed"||c==="service-not-allowed"||c==="audio-capture")fallbackTyping("Le micro du navigateur est bloqué dans le cockpit : touche le champ, puis le micro de ton clavier pour dicter.");else if(c==="no-speech")immCap.textContent="Je n'ai rien entendu. Touche le micro et parle.";else immCap.textContent="Écoute interrompue. Réessaie."};
     rec.onend=()=>{const t=heard;stopMic();if(t.trim())ask(t)};
     try{rec.start()}catch(e){stopMic();fallbackTyping("Micro indisponible ici : dicte avec le micro de ton clavier.")}
   };
 
   /* démarrage */
-  scene3d.onCore=()=>{scene3d.say("À ton écoute, Rayan.",3500);if(S.imm){micBtn.click();return}if(window.innerWidth<=1100)$("chat").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>q.focus({preventScroll:true}),window.innerWidth<=1100?600:0)};
+  scene3d.onCore=()=>{scene3d.say("À ton écoute.",3500);if(S.imm){micBtn.click();return}if(window.innerWidth<=1100)$("chat").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>q.focus({preventScroll:true}),window.innerWidth<=1100?600:0)};
   renderAll();
   const saved=store.get("qg-vue");setView(saved||(window.innerWidth>=900?"bureau":"tableau"));
 })();
