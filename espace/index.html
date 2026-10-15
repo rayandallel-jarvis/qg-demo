@@ -183,7 +183,7 @@ button{font:inherit;color:inherit}
       <div><h1>L'Espace</h1><p>Le bureau IA d'une petite entreprise</p></div>
     </div>
     <div class="right">
-      <span class="chip demo">Démo · Ondine Café, torréfacteur fictif</span>
+      <span class="chip demo">Démo · Atelier Azur, entreprise fictive</span>
       <button class="chip todo-chip" type="button" id="todoChip" hidden><i></i><span id="todoN">0 à traiter</span></button>
       <span class="chip" id="clockChip"><i></i><span id="clock">--:--</span></span>
     </div>
@@ -213,9 +213,9 @@ button{font:inherit;color:inherit}
       </div>
       <div class="welcome" id="welcome">
         <div class="card">
-          <span class="eyebrow">Bienvenue chez Ondine Café</span>
+          <span class="eyebrow">Bienvenue à l'Atelier Azur</span>
           <h2>Six agents IA font tourner l'entreprise. Le patron dort.</h2>
-          <p>Ondine Café est un petit torréfacteur inventé : une boutique, un site, des clients pros. Chaque pièce de cet espace est tenue par un agent : le courrier, la comptabilité, les ventes, le planning, la veille et les projets. Au rez-de-chaussée, le cœur du cockpit relie tout.</p>
+          <p>L'Atelier Azur est un petit atelier de céramique inventé : une boutique, un site, des clients pros. Chaque pièce de cet espace est tenue par un agent : le courrier, la comptabilité, les ventes, le planning, la veille et les projets. Au rez-de-chaussée, le cœur du cockpit relie tout.</p>
           <div class="row"><button class="btn" type="button" id="startTour">Commencer la visite</button><button class="btn ghost" type="button" id="freeTour">Explorer seul</button></div>
           <div class="who"><div class="dots" id="dots"></div><span>Démo conçue par Rayan, contrôleur de gestion. Entreprise et chiffres fictifs.</span></div>
         </div>
@@ -235,7 +235,7 @@ button{font:inherit;color:inherit}
       <div class="notice" id="notice"></div>
     </aside>
   </div>
-  <p class="foot">L'Espace · démo · Ondine Café et toutes ses données sont inventées.</p>
+  <p class="foot">L'Espace · démo · L'Atelier Azur et toutes ses données sont inventées. · Un espace conçu par <a href="https://www.linkedin.com/in/rayan-dallel-012633130" target="_blank" rel="noopener">Culina Expertise</a></p>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -295,7 +295,7 @@ function drawScreen(k,x,w,hh,f){const a=AG[k];x.fillStyle="#ffffff";x.fillRect(0
   x.fillStyle=a.color;x.fillRect(0,0,w,70);x.fillStyle="#fff";x.textBaseline="middle";x.font=`700 36px ${FD}`;x.fillText(a.nom,28,36);
   x.font=`500 20px ${FM}`;x.textAlign="right";x.fillText(k==="coeur"?"POINT DU MATIN · 8 H":"● AU TRAVAIL",w-28,36);x.textAlign="left";
   const W=w-56;
-  if(k==="concierge"){x.fillStyle="#5b655f";x.font=`500 21px ${FM}`;x.fillText("CONTACT@ONDINE-CAFE · 34 NOUVEAUX MAILS",28,100);
+  if(k==="concierge"){x.fillStyle="#5b655f";x.font=`500 21px ${FM}`;x.fillText("CONTACT@ATELIER-AZUR · 34 NOUVEAUX MAILS",28,100);
     [["12 commandes de la boutique en ligne","→ Comptable"],["3 demandes de devis","→ Commercial"],["2 factures fournisseurs","→ Comptable"],["15 newsletters","Archivées"],["1 mail d'hameçonnage","Signalé"]].forEach(([l,v],i)=>row(x,a,28,124+i*60,W,l,v,(f%5)===i,i===4?"#b23a3a":null))}
   else if(k==="comptable"){const kp=[["TRÉSORERIE",fmt(18420)+" €","#1d2421"],["DANS 30 JOURS",fmt(TRESO[29])+" €","#1d2421"],["IMPAYÉS","1 450 €","#b23a3a"]];
     kp.forEach(([l,v,c],i)=>{const X=28+i*(W/3);x.fillStyle="#f4f4f1";rr(x,X,92,W/3-14,96,12);x.fill();x.fillStyle="#5b655f";x.font=`500 18px ${FM}`;x.fillText(l,X+16,118);x.fillStyle=c;x.font=`700 38px ${FD}`;x.fillText(v,X+16,160)});
@@ -307,11 +307,11 @@ function drawScreen(k,x,w,hh,f){const a=AG[k];x.fillStyle="#ffffff";x.fillRect(0
     const cw=(W-36)/4;cols.forEach(([t,n,cards],i)=>{const X=28+i*(cw+12);x.fillStyle="#f4f4f1";rr(x,X,92,cw,410,12);x.fill();x.fillStyle="#5b655f";x.font=`500 16px ${FM}`;x.fillText(t,X+14,116);x.fillStyle="#1d2421";x.font=`700 26px ${FD}`;x.fillText(n,X+14,150);
       cards.forEach((c,j)=>{const Y=176+j*84;const hl=((f+i)%4===0&&j===0);x.fillStyle=hl?a.soft:"#fff";rr(x,X+10,Y,cw-20,70,10);x.fill();x.strokeStyle=hl?a.color:"#e4e6e1";x.lineWidth=2;x.stroke();x.fillStyle="#1d2421";x.font=`600 20px ${FB}`;x.fillText(fit(x,c,cw-44),X+22,Y+26);x.fillStyle="#8a938d";x.font=`500 15px ${FM}`;x.fillText(i===1?"RELANCE J+7":"À SUIVRE",X+22,Y+52)})});
     x.fillStyle="#b23a3a";x.font=`600 20px ${FB}`;x.fillText("Attention : l'Hôtel Rivage a une facture impayée",28,530)}
-  else if(k==="planificateur"){const days=["LUN","MAR","MER","JEU","VEN"],ev=[["Café vert livré","Paie préparée"],["RDV banque 10 h"],["TVA dans 6 j","Dégustation pro"],["Salon du café"],["Paie","Point de la semaine"]];
+  else if(k==="planificateur"){const days=["LUN","MAR","MER","JEU","VEN"],ev=[["Argile livrée","Paie préparée"],["RDV banque 10 h"],["TVA dans 6 j","Démo client pro"],["Salon de la déco"],["Paie","Point de la semaine"]];
     const cw=(W-48)/5;days.forEach((d,i)=>{const X=28+i*(cw+12);const today=i===2;x.fillStyle=today?a.soft:"#f4f4f1";rr(x,X,92,cw,420,12);x.fill();x.fillStyle=today?a.color:"#5b655f";x.font=`600 20px ${FM}`;x.fillText(d,X+14,118);
       ev[i].forEach((e,j)=>{const Y=146+j*84;const alert=e.startsWith("TVA");x.fillStyle=alert?"#fbe4e4":"#fff";rr(x,X+8,Y,cw-16,70,10);x.fill();x.fillStyle=alert?"#b23a3a":"#1d2421";x.font=`600 18px ${FB}`;const words=e.split(" ");let l1="",l2="";words.forEach(wd=>{if(x.measureText(l1+" "+wd).width<cw-40&&!l2)l1=(l1?l1+" ":"")+wd;else l2=(l2?l2+" ":"")+wd});x.fillText(l1,X+18,Y+26);if(l2)x.fillText(fit(x,l2,cw-40),X+18,Y+50)})});
     x.fillStyle="#1d2421";x.font=`600 20px ${FB}`;x.fillText("Prochaine échéance : déclaration de TVA dans 6 jours",28,540)}
-  else if(k==="veilleur"){[["Prix du café vert","Toujours élevé cette semaine ; fournisseur prévient d'une hausse au 1er du mois.",2],["Facture électronique","Rappel : se préparer à recevoir les factures au format électronique.",1],["Concurrence","Un nouveau torréfacteur ouvre rue des Arts, à 400 m de la boutique.",1]].forEach(([t,s,n],i)=>{const Y=92+i*138;const hl=(f%3)===i;x.fillStyle=hl?a.soft:"#f4f4f1";rr(x,28,Y,W,122,12);x.fill();
+  else if(k==="veilleur"){[["Prix de l'argile","Toujours élevé cette semaine ; fournisseur prévient d'une hausse au 1er du mois.",2],["Facture électronique","Rappel : se préparer à recevoir les factures au format électronique.",1],["Concurrence","Un nouvel atelier ouvre rue des Arts, à 400 m de la boutique.",1]].forEach(([t,s,n],i)=>{const Y=92+i*138;const hl=(f%3)===i;x.fillStyle=hl?a.soft:"#f4f4f1";rr(x,28,Y,W,122,12);x.fill();
       x.fillStyle="#1d2421";x.font=`700 28px ${FD}`;x.fillText(t,48,Y+36);x.fillStyle="#5b655f";x.font=`400 21px ${FB}`;x.fillText(fit(x,s,W-60),48,Y+82);
       const lab=n+" NOUVEAU"+(n>1?"X":"");x.font=`600 17px ${FM}`;const lw=x.measureText(lab).width+26;rr(x,28+W-20-lw,Y+16,lw,34,17);x.fillStyle=a.color;x.fill();x.fillStyle="#fff";x.fillText(lab,28+W-7-lw,Y+34)})}
   else if(k==="jardinier"){PROJ.forEach((p,i)=>{const Y=92+i*104;x.fillStyle=(f%4)===i?a.soft:"#f4f4f1";rr(x,28,Y,W,90,12);x.fill();x.fillStyle="#1d2421";x.font=`700 25px ${FD}`;x.fillText(p.t,48,Y+30);
@@ -326,9 +326,9 @@ function drawScreen(k,x,w,hh,f){const a=AG[k];x.fillStyle="#ffffff";x.fillRect(0
 const TASK={concierge:"En cours : traitement des mails arrivés depuis 7 h",comptable:"En cours : rapprochement des paiements de la nuit",commercial:"En cours : préparation du devis Brasserie du Port",planificateur:"En cours : vérification des échéances du mois",veilleur:"En cours : lecture des sources du matin",jardinier:"En cours : mise à jour des étapes des projets"};
 const PROJ=[
  {t:"Deuxième boutique",p:40,next:"Signer le bail",due:"30 oct.",health:"ok",late:false,steps:[["Trouver le local",1],["Valider le business plan",1],["Signer le bail",0],["Lancer les travaux",0],["Ouvrir la boutique",0]]},
- {t:"Abonnement café mensuel",p:70,next:"Tester l'envoi à 20 clients",due:"22 oct.",health:"ok",late:false,steps:[["Définir l'offre",1],["Fixer les prix",1],["Créer la page de vente",1],["Tester l'envoi à 20 clients",0],["Lancer l'abonnement",0]]},
+ {t:"Abonnement box déco",p:70,next:"Tester l'envoi à 20 clients",due:"22 oct.",health:"ok",late:false,steps:[["Définir l'offre",1],["Fixer les prix",1],["Créer la page de vente",1],["Tester l'envoi à 20 clients",0],["Lancer l'abonnement",0]]},
  {t:"Nouveau site web",p:25,next:"Valider les maquettes",due:"9 oct.",health:"late",delay:"J+5",late:true,steps:[["Rédiger le brief",1],["Valider les maquettes",0],["Développer le site",0],["Mettre en ligne",0]]},
- {t:"Recruter un barista",p:55,next:"Deuxième entretien",due:"jeudi 16 oct.",health:"warn",late:false,steps:[["Publier l'annonce",1],["Trier les CV",1],["Premiers entretiens",1],["Deuxième entretien",0],["Intégration",0]]}];
+ {t:"Recruter un céramiste",p:55,next:"Deuxième entretien",due:"jeudi 16 oct.",health:"warn",late:false,steps:[["Publier l'annonce",1],["Trier les CV",1],["Premiers entretiens",1],["Deuxième entretien",0],["Intégration",0]]}];
 const HEALTH={ok:{c:"#2f7a40",soft:"#e2efdc",lab:"Dans les temps",tree:0x2f7a40},warn:{c:"#b8741a",soft:"#f7ead6",lab:"Échéance proche",tree:0xc98a2a},late:{c:"#b5523b",soft:"#f6e4de",lab:"En retard",tree:0xb5583c}};
 
 /* ================= SIMULATION : ÉVÉNEMENTS ================= */
@@ -339,8 +339,8 @@ const EVENTS=[["concierge","3 demandes de devis transmises au Commercial"],
   ["planificateur","TVA à déclarer dans 6 jours : brouillon prêt","Valider le brouillon","Brouillon de TVA validé"],
   ["veilleur","Nouveau : un concurrent ouvre rue des Arts"],
   ["concierge","Client mécontent : réponse proposée à relire","Valider la réponse","Réponse au client envoyée"],
-  ["jardinier","Abonnement café : étape « fiche produit » terminée"],
-  ["veilleur","Un fournisseur de grains augmente ses prix de 8 %","Marquer comme lu","Hausse fournisseur notée"],
+  ["jardinier","Abonnement box déco : étape « fiche produit » terminée"],
+  ["veilleur","Un fournisseur d'argile augmente ses prix de 8 %","Marquer comme lu","Hausse fournisseur notée"],
   ["comptable","Paiement reçu : Café Lumière, 470 €"],
   ["jardinier","Nouveau site web : maquettes à valider","Valider les maquettes","Maquettes validées"],
   ["concierge","12 commandes transmises à la Comptable"]];
@@ -382,7 +382,7 @@ function renderNotice(){const el=$("notice");el.replaceChildren();const i=Math.m
   const nav=h("div",{class:"nav"},h("button",{class:"btn ghost",type:"button",disabled:i===0,onclick:()=>gotoStep(i-1)},"Précédent"),prog_,
     i<STEPS.length-1?h("button",{class:"btn",type:"button",onclick:()=>gotoStep(i+1)},step<1?"Commencer":"Suivant"):h("button",{class:"btn ghost",type:"button",onclick:()=>gotoStep(1)},"Recommencer"));
   if(s.key==="home"){el.append(h("div",{class:"step-h"},h("span",{class:"num",style:"background:#1d2421"},"0"),h("div",null,h("small",{text:s.sub}),h("h3",{text:s.t}))),
-      todoBox(ORDER,"À traiter maintenant")||"",h("p",{style:"margin:0",text:"Voici l'espace d'Ondine Café, en coupe. Au rez-de-chaussée, le courrier, le cœur et la comptabilité ; à l'étage, les ventes, le planning et la veille ; sur le toit, la serre où chaque projet est un arbre. Chaque pièce a son agent et son écran."}),
+      todoBox(ORDER,"À traiter maintenant")||"",h("p",{style:"margin:0",text:"Voici l'espace de l'Atelier Azur, en coupe. Au rez-de-chaussée, le courrier, le cœur et la comptabilité ; à l'étage, les ventes, le planning et la veille ; sur le toit, la serre où chaque projet est un arbre. Chaque pièce a son agent et son écran."}),
       h("dl",null,h("div",null,h("dt",{text:"Pourquoi un espace"}),h("dd",{text:"Une petite entreprise, c'est un ensemble de métiers : chacun a sa pièce. On voit qui travaille, sur quoi, et ce qui circule entre les pièces."}))),nav);return}
   if(s.key==="end"){el.append(h("div",{class:"step-h"},h("span",{class:"num",style:"background:#b98b2f"},"✓"),h("div",null,h("small",{text:s.sub}),h("h3",{text:s.t}))),
       h("p",{style:"margin:0",text:"Six agents, un cœur qui relie tout, et un dirigeant qui lit un seul point le matin. Ce bureau se construit pièce par pièce, en commençant par l'agent qui te fait perdre le plus de temps."}),
@@ -470,7 +470,7 @@ function build(){
   // plafonniers
   Object.keys(WALL).forEach(k=>{const a=AG[k];const top=ry(a.lvl)+FH-SL;cyl(.02,.02,.5,"#2b2f2c",rx(a.col),top-.25,0);const sh=cyl(.18,.42,.32,"#2b2f2c",rx(a.col),top-.6,0);const b=sph(.12,"#fff5d6",rx(a.col),top-.72,0,null,{emissive:new THREE.Color("#ffe3a3"),emissiveIntensity:.9})});
   // enseigne
-  {const T=texCanvas(1024,160,(x,w,hh)=>{x.fillStyle="#2b2f2c";x.fillRect(0,0,w,hh);x.fillStyle="#e9c875";x.font=`700 92px ${FD}`;x.textAlign="center";x.textBaseline="middle";x.fillText("ONDINE CAFÉ",w/2,hh/2+4)});
+  {const T=texCanvas(1024,160,(x,w,hh)=>{x.fillStyle="#2b2f2c";x.fillRect(0,0,w,hh);x.fillStyle="#e9c875";x.font=`700 92px ${FD}`;x.textAlign="center";x.textBaseline="middle";x.fillText("ATELIER AZUR",w/2,hh/2+4)});
    const m=new THREE.Mesh(new THREE.PlaneGeometry(6.4,1),new THREE.MeshBasicMaterial({map:T.t}));m.position.set(0,2*FH-.08,ZF+.66);S.add(m)}
   // plaques numérotées posées devant chaque pièce
   ORDER.forEach((k,i)=>{const a=AG[k];if(k==="jardinier")return;const T=texCanvas(512,96,(x,w,hh)=>{x.fillStyle="#2b2f2c";x.fillRect(0,0,w,hh);x.fillStyle=a.color;x.beginPath();x.arc(48,48,30,0,7);x.fill();x.fillStyle="#fff";x.font=`700 34px ${FD}`;x.textAlign="center";x.textBaseline="middle";x.fillText(String(i+1),48,50);x.textAlign="left";x.fillStyle="#f1ede4";x.font=`600 38px ${FB}`;x.fillText(a.nom,96,50)});
